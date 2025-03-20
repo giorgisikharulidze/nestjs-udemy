@@ -1,20 +1,33 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import { ITask } from './task.model';
+import { response } from 'express';
+import { CreateTaskDto } from './create-task.dto';
 
 @Controller('tasks')
 export class TasksController {
 
-    constructor(
-        private readonly taskService = TasksService
-    ){}
+    constructor(private readonly taskService: TasksService){}
     
     @Get()
-    public findAll():string[]{
-        return ['A','B']
+    public findAll():ITask[]{
+        return this.taskService.findAll()
     }
 
     @Get('/:id')
-    public findOne(@Param() params: any):string{
-        return `The number is ${params.id}`; 
+    public findOne(@Param() params: any):ITask{
+        const task = this.taskService.findOne(params.id); 
+
+        if(task){
+
+            return task;
+        }
+            throw new NotFoundException();
+
+    }
+
+    @Post()
+    public create(@Body() createTaskDto: CreateTaskDto){
+        return this.taskService.create(createTaskDto);
     }
 }

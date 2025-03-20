@@ -23,7 +23,7 @@ Content-Type: {{contentType}}
 {
     "title" : "Learn NestJS",
     "description": "Complete the NestJS Course",
-    "status": "OPEN"
+    "status": "DONE"
 }
 ### set the task id
 @taskId = {{createTask.response.body.id}}
@@ -46,9 +46,9 @@ Content-Type: {{contentType}}
 PATCH {{baseUrl}}/tasks/{{taskId}}
 Content-Type: {{contentType}} 
 
-{   "title" : "Learn NestJS Update",
-    "description": "Complete the NestJS Course Update",
-    "status": "DONE"
+{   "title" : "Learn NestJS",
+    "description": "Complete the NestJS Course",
+    "status": "IN_PROGRESS"
 }
 
 

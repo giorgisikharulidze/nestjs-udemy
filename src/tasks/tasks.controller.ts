@@ -42,15 +42,15 @@ export class TasksController {
 
     }*/
 
-        @Patch(':id')
-        public updateTask(
-            @Param() params: FindOneParams,
-            @Body() updateTaskDto: UpdateTaskDto
-        ): ITask{
-            const task = this.findOneOrFail(params.id);
-            return this.taskService.updateTask(task,updateTaskDto);
-            
-        }
+    @Patch(':id')
+    public updateTask(
+        @Param() params: FindOneParams,
+        @Body() updateTaskDto: UpdateTaskDto
+    ): ITask{
+        const task = this.findOneOrFail(params.id);
+        return this.taskService.updateTask(task,updateTaskDto);
+        
+    }
 
     @Delete('/:id')
     @HttpCode(HttpStatus.NO_CONTENT)

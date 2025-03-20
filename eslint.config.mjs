@@ -32,4 +32,8 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-argument': 'warn'
     },
   },
-);
+);module.exports = {
+  singleQuote: true,
+  trailingComma: "all",
+  endOfLine: "auto",
+};

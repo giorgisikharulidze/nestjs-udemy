@@ -48,3 +48,11 @@ Content-Type: {{contentType}}
 {
     "status": "XXX"
 }
+
+
+
+4a6bf6bf-ee75-4d84-8ec5-014c472815b9
+
+### Deleting a task
+
+DELETE {{baseUrl}}/tasks/e87f7eb2-b666-45b0-9172-090937fa6ac3

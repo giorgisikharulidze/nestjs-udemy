@@ -35,5 +35,16 @@ Content-Type: {{contentType}}
 {
     "title" : "Learn NestJS",
     "description": "Complete the NestJS Course",
+    "status": "XXXOPEN"
+}
+
+
+
+###Update new task
+
+PATCH {{baseUrl}}/tasks/e7a7e86e-7379-4b2a-95d6-c6727bcb6075/status
+Content-Type: {{contentType}} 
+
+{
     "status": "XXX"
 }

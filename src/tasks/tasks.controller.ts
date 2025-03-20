@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ITask } from './task.model';
 import { response } from 'express';
@@ -6,6 +6,7 @@ import { CreateTaskDto } from './create-task.dto';
 import { FindOneParams } from './find-one.params';
 import { UpdateTaskStatusDto } from './update-task-status.dto';
 import { UpdateTaskDto } from './update-task.dto';
+import { WrongTaskStatusException } from './exceptions/wrong-task-status.exception';
 
 @Controller('tasks')
 export class TasksController {
@@ -48,7 +49,16 @@ export class TasksController {
         @Body() updateTaskDto: UpdateTaskDto
     ): ITask{
         const task = this.findOneOrFail(params.id);
-        return this.taskService.updateTask(task,updateTaskDto);
+        try{
+
+            return this.taskService.updateTask(task,updateTaskDto);
+         }
+        catch(error){
+            if(error instanceof WrongTaskStatusException){
+                throw new BadRequestException([error.message]);
+            }
+            throw error;
+        }
         
     }
 

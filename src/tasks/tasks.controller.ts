@@ -3,6 +3,7 @@ import { TasksService } from './tasks.service';
 import { ITask } from './task.model';
 import { response } from 'express';
 import { CreateTaskDto } from './create-task.dto';
+import { FindOneParams } from './find-one.params';
 
 @Controller('tasks')
 export class TasksController {
@@ -15,7 +16,7 @@ export class TasksController {
     }
 
     @Get('/:id')
-    public findOne(@Param() params: any):ITask{
+    public findOne(@Param() params: FindOneParams):ITask{
         const task = this.taskService.findOne(params.id); 
 
         if(task){

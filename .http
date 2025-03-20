@@ -1,2 +1,10 @@
 # The basic request
 http://localhost:8000
+
+
+### Get all tasks
+GET http://localhost:8000/tasks
+
+### Get one tasks
+GET http://localhost:8000/tasks/123
+

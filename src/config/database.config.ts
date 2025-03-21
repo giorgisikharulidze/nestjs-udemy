@@ -9,4 +9,5 @@ export const typeOrmConfig = registerAs('database',():TypeOrmModuleOptions=>({
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
+    synchronize: Boolean(process.env.DB_SYNC ?? false),
 }));

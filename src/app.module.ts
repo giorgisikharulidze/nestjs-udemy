@@ -20,7 +20,7 @@ import { Task } from './tasks/task.entity';
       inject: [ConfigService],
       useFactory: (configService: TypedConfigService)=>({
         ...configService.get('database'),
-   //     entities: [Task],
+        entities: [Task],
       })
     }),
     ConfigModule.forRoot({

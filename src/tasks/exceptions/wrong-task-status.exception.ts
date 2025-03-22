@@ -1,9 +1,7 @@
-export class WrongTaskStatusException extends Error{
-    
-    constructor(){
-        
-        super('Wrong task status transition!');
+export class WrongTaskStatusException extends Error {
+  constructor() {
+    super('Wrong task status transition!');
 
-        this.name='WrongTaskStatusException';
-    }
+    this.name = 'WrongTaskStatusException';
+  }
 }

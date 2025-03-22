@@ -22,27 +22,32 @@ import { Property } from './property/property.entity';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: TypedConfigService)=>({
+      useFactory: (configService: TypedConfigService) => ({
         ...configService.get('database'),
         entities: [Task, User, TaskLabel, Property],
-      })
+      }),
     }),
     ConfigModule.forRoot({
       load: [appConfig, typeOrmConfig],
       validationSchema: appConfigSchema,
-      validationOptions:{
+      validationOptions: {
         //allowUnknow: false,
         abortEarly: true,
-      }
+      },
     }),
     TasksModule,
-    PropertyModule
+    PropertyModule,
   ],
   controllers: [AppController],
-  providers: [AppService, DummyService, MessageformatterService, LoggerService,
+  providers: [
+    AppService,
+    DummyService,
+    MessageformatterService,
+    LoggerService,
     {
       provide: TypedConfigService,
       useExisting: ConfigService,
-    }],
+    },
+  ],
 })
 export class AppModule {}

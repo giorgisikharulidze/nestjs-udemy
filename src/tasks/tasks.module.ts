@@ -8,6 +8,6 @@ import { TaskLabel } from './task-label.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Task, TaskLabel])],
   controllers: [TasksController],
-  providers: [TasksService]
+  providers: [TasksService],
 })
 export class TasksModule {}

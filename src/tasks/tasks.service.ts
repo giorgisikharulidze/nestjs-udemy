@@ -11,120 +11,111 @@ import { TaskLabel } from './task-label.entity';
 
 @Injectable()
 export class TasksService {
-   
-    constructor(
-        @InjectRepository(Task)
-        private readonly taskRepository: Repository<Task>,
-        @InjectRepository(TaskLabel)
-        private readonly labelsRepository: Repository<TaskLabel>
-    ){}
+  constructor(
+    @InjectRepository(Task)
+    private readonly taskRepository: Repository<Task>,
+    @InjectRepository(TaskLabel)
+    private readonly labelsRepository: Repository<TaskLabel>,
+  ) {}
 
-    public async findAll(): Promise<Task[]> {
-        return await this.taskRepository.find();
-    }
+  public async findAll(): Promise<Task[]> {
+    return await this.taskRepository.find();
+  }
 
-    public async findOne(id:string): Promise<Task | null>  {
-
+  public async findOne(id: string): Promise<Task | null> {
     return await this.taskRepository.findOne({
-        where: {id},
-        relations: ['labels'],
+      where: { id },
+      relations: ['labels'],
     });
+  }
+
+  public async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    if (createTaskDto.labels) {
+      createTaskDto.labels = this.getUniqueLabels(createTaskDto.labels);
+    }
+    return await this.taskRepository.save(createTaskDto);
+  }
+
+  public async updateTask(
+    task: Task,
+    updateTaskDto: UpdateTaskDto,
+  ): Promise<Task> {
+    if (
+      updateTaskDto.status &&
+      !this.isValideStatusTransition(task.status, updateTaskDto.status)
+    ) {
+      throw new WrongTaskStatusException();
     }
 
-    public async createTask(createTaskDto: CreateTaskDto): Promise<Task>{
-
-        if(createTaskDto.labels){
-            createTaskDto.labels = this.getUniqueLabels(createTaskDto.labels);
-        }
-        return await this.taskRepository.save(createTaskDto);
-
+    if (updateTaskDto.labels) {
+      updateTaskDto.labels = this.getUniqueLabels(updateTaskDto.labels);
     }
 
+    Object.assign(task, updateTaskDto);
+    return await this.taskRepository.save(task);
+  }
 
-    public async updateTask(
-        task: Task, 
-        updateTaskDto: UpdateTaskDto
-    ): Promise<Task>{
+  public async addLabels(
+    task: Task,
+    lableDtos: CreateTaskLabelDto[],
+  ): Promise<Task> {
+    // 1) dublicate dtos
+    //2) get existing names
+    // 3) new labels aren't already existing ones
+    // 4) we save new ones, only if there are any real new ones
 
-        if(
-            updateTaskDto.status && !this.isValideStatusTransition(task.status,updateTaskDto.status)
-          ) 
-        {
-            throw new WrongTaskStatusException(); 
-        }
+    const names = new Set(task.labels.map((label) => label.name)); //1
 
-if(updateTaskDto.labels){
-    updateTaskDto.labels = this.getUniqueLabels(updateTaskDto.labels);
+    const labels = this.getUniqueLabels(lableDtos) //2
+      .filter((dto) => !names.has(dto.name)) //3
+      .map((label) => this.labelsRepository.create(label));
+
+    //4
+    if (labels.length) {
+      task.labels = [...task.labels, ...labels];
+      return await this.taskRepository.save(task);
     }
 
-        Object.assign(task,updateTaskDto);
-        return  await this.taskRepository.save(task);
-    }
+    return task;
+  }
 
-    public async addLabels(task: Task, lableDtos: CreateTaskLabelDto[]): 
-    Promise<Task>{
+  public async removeLebels(
+    task: Task,
+    labelsToRemove: string[],
+  ): Promise<Task> {
+    // 1. remove existing labels from labals array
+    // 2. way to solve
+    //  a) remove labels from task-> labels and save() the task
+    //  b) query builder -  sql that deletes labels
 
-        // 1) dublicate dtos
-        //2) get existing names 
-        // 3) new labels aren't already existing ones
-        // 4) we save new ones, only if there are any real new ones
+    task.labels = task.labels.filter(
+      (label) => !labelsToRemove.includes(label.name),
+    );
 
-        const names = new Set(task.labels.map(label => label.name)); //1
+    return await this.taskRepository.save(task);
+  }
 
-        const labels = this.getUniqueLabels(lableDtos) //2
-        .filter(dto => !names.has(dto.name)) //3
-        .map(
-            (label)=> 
-                this.labelsRepository.create(label),
-        );
+  public async deleteTask(task: Task): Promise<void> {
+    //        await this.taskRepository.remove(task);
+    await this.taskRepository.delete(task.id);
+  }
 
-        //4
-        if(labels.length){
-            task.labels = [... task.labels, ...labels];
-            return await this.taskRepository.save(task);    
-        }        
+  private isValideStatusTransition(
+    currentStatus: TaskStatus,
+    newStatus: TaskStatus,
+  ): boolean {
+    const statusOrder = [
+      TaskStatus.OPEN,
+      TaskStatus.IN_PROGRESS,
+      TaskStatus.DONE,
+    ];
+    return statusOrder.indexOf(currentStatus) <= statusOrder.indexOf(newStatus);
+  }
 
-        return task;
-
-    }
-        
-    public async removeLebels(task:Task, labelsToRemove: string[]): Promise<Task>
-    { 
-        // 1. remove existing labels from labals array
-        // 2. way to solve
-          //  a) remove labels from task-> labels and save() the task
-          //  b) query builder -  sql that deletes labels
-
-          task.labels = task.labels.filter
-          (label=> !labelsToRemove
-            .includes(label.name))
-
-            return await this.taskRepository.save(task);
-    }
-
-    public async  deleteTask(task: Task): Promise<void> {
-//        await this.taskRepository.remove(task);
-        await this.taskRepository.delete(task.id);
-    }
-
-    
-
-    private isValideStatusTransition(
-        currentStatus: TaskStatus,
-    newStatus:TaskStatus): boolean
-    {
-        const statusOrder = [
-         TaskStatus.OPEN,
-         TaskStatus.IN_PROGRESS,
-         TaskStatus.DONE   
-        ];
-        return statusOrder.indexOf(currentStatus)<= statusOrder.indexOf(newStatus);
-
-    }
-
-    private getUniqueLabels(labelDtos: CreateTaskLabelDto[]):CreateTaskLabelDto[]{
-        const uniqueNames = [...new Set(labelDtos.map(label => label.name))];
-        return uniqueNames.map(name=>({name}));
-    }
-
+  private getUniqueLabels(
+    labelDtos: CreateTaskLabelDto[],
+  ): CreateTaskLabelDto[] {
+    const uniqueNames = [...new Set(labelDtos.map((label) => label.name))];
+    return uniqueNames.map((name) => ({ name }));
+  }
 }

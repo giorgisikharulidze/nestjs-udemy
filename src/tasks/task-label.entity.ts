@@ -1,30 +1,37 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
-import { Task } from "./task.entity";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+  UpdateDateColumn,
+} from 'typeorm';
+import { Task } from './task.entity';
 
 @Entity()
-@Unique(['name','taskId'])
-export class TaskLabel{
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+@Unique(['name', 'taskId'])
+export class TaskLabel {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column()
-    @Index()
-    taskId: string;
+  @Column()
+  @Index()
+  taskId: string;
 
-    @ManyToOne(() => Task, (task) => task.labels,
-        {
-            onDelete: 'CASCADE',
-            orphanedRowAction: 'delete'
+  @ManyToOne(() => Task, (task) => task.labels, {
+    onDelete: 'CASCADE',
+    orphanedRowAction: 'delete',
+  })
+  task: Task;
 
-        })
-    task:Task;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

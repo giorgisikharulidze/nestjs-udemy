@@ -1,3 +1,4 @@
+import { Property } from "src/property/property.entity";
 import { Task } from "src/tasks/task.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 
@@ -24,4 +25,7 @@ export class User{
 
    @OneToMany(() => Task, (task) => task.user)
    tasks: Task[];
+
+   @OneToMany(()=>Property, property=> property.user)
+   properties: Property[];
 }

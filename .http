@@ -93,3 +93,33 @@ DELETE {{baseUrl}}/tasks/{{taskId}}/labels
 Content-Type: {{contentType}}
 
 ["prioritized","bug"]
+
+
+
+### Get All Properties
+# @name getProperties
+GET {{baseUrl}}/property
+
+
+### Get one property
+# @name getOneProperty
+GET {{baseUrl}}/property/{{propertyId}}
+
+
+### Create property
+# @name createProperty
+POST {{baseUrl}}/property
+Content-Type: {{contentType}}
+
+{
+    "name": "House 2",
+    "type": "REAL_ESTATE",
+    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632"
+}
+### set the property id
+@propertyId = {{createProperty.response.body.id}}
+
+
+### Delete property
+# @name deleteProperty
+DELETE {{baseUrl}}/property/{{propertyId}}

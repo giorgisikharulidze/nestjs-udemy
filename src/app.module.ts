@@ -14,6 +14,8 @@ import { TypedConfigService } from './config/typed-config.service';
 import { Task } from './tasks/task.entity';
 import { User } from './users/user.entity';
 import { TaskLabel } from './tasks/task-label.entity';
+import { PropertyModule } from './property/property.module';
+import { Property } from './property/property.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { TaskLabel } from './tasks/task-label.entity';
       inject: [ConfigService],
       useFactory: (configService: TypedConfigService)=>({
         ...configService.get('database'),
-        entities: [Task, User, TaskLabel],
+        entities: [Task, User, TaskLabel, Property],
       })
     }),
     ConfigModule.forRoot({
@@ -32,7 +34,9 @@ import { TaskLabel } from './tasks/task-label.entity';
         //allowUnknow: false,
         abortEarly: true,
       }
-    }),TasksModule
+    }),
+    TasksModule,
+    PropertyModule
   ],
   controllers: [AppController],
   providers: [AppService, DummyService, MessageformatterService, LoggerService,

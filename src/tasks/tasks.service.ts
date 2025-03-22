@@ -88,6 +88,20 @@ if(updateTaskDto.labels){
 
     }
         
+    public async removeLebels(task:Task, labelsToRemove: string[]): Promise<Task>
+    { 
+        // 1. remove existing labels from labals array
+        // 2. way to solve
+          //  a) remove labels from task-> labels and save() the task
+          //  b) query builder -  sql that deletes labels
+
+          task.labels = task.labels.filter
+          (label=> !labelsToRemove
+            .includes(label.name))
+
+            return await this.taskRepository.save(task);
+    }
+
     public async  deleteTask(task: Task): Promise<void> {
 //        await this.taskRepository.remove(task);
         await this.taskRepository.delete(task.id);

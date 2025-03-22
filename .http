@@ -123,3 +123,14 @@ Content-Type: {{contentType}}
 ### Delete property
 # @name deleteProperty
 DELETE {{baseUrl}}/property/{{propertyId}}
+
+
+### Update property
+# @name updateProperty
+PATCH {{baseUrl}}/property/{{propertyId}}
+Content-Type: {{contentType}}
+
+{
+ "name": "House 3",
+ "type": "REAL_ESTATE"
+}

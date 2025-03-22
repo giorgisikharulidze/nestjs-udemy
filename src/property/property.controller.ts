@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
-import { FindOneOptions } from 'typeorm';
-import { FindOneParams } from 'src/tasks/find-one.params';
 import { CreatePropertyDto } from './create-property.dto';
+import { FindOneParams } from './find-one.params';
+import { UpdatePropertyDto } from './update-property.dto';
 
 @Controller('property')
 export class PropertyController {
@@ -41,7 +41,16 @@ export class PropertyController {
             
         }
       
+        @Patch(':id')
+        public async updateProperty(
+            @Param() params: FindOneParams,
+            @Body() updateProperty: UpdatePropertyDto
+        ){
 
+            const property = await this.findOneOrFail(params.id);
+
+            return await this.propertyService.updateProperty(property,updateProperty);
+        }
 
 
       private async findOneOrFail(id:string): Promise<Property>{

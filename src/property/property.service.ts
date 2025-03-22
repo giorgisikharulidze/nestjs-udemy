@@ -4,6 +4,7 @@ import { Property } from './property.entity';
 import { User } from 'src/users/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePropertyDto } from './create-property.dto';
+import { UpdatePropertyDto } from './update-property.dto';
 
 @Injectable()
 export class PropertyService {
@@ -27,11 +28,21 @@ export class PropertyService {
         )
     }
 
-    public async createProperty(createPopertyDto: CreatePropertyDto): Promise<Property>{
+    public async createProperty(createPropertyDto: CreatePropertyDto): Promise<Property>{
 
-        return await this.propertyRepository.save(createPopertyDto);
+        return await this.propertyRepository.save(createPropertyDto);
     }
 
+    public async updateProperty(
+        property: Property,
+        updatePropertyDto: UpdatePropertyDto
+    ):Promise<Property>{
+
+        Object.assign(property,updatePropertyDto);
+
+       return await this.propertyRepository.save(property);
+        
+    }
     public async deleteProperty(property: Property): Promise<void>{
         this.propertyRepository.delete(property.id);
     }

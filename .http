@@ -23,7 +23,12 @@ Content-Type: {{contentType}}
     "title" : "Learn NestJS",
     "description": "Complete the NestJS Course",
     "status": "OPEN",
-    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632"    
+    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
+    "labels": [
+        {
+            "name": "urgent"
+        }
+    ]    
 }
 ### set the task id
 @taskId = {{createTask.response.body.id}}
@@ -37,7 +42,13 @@ Content-Type: {{contentType}}
     "title" : "Learn NestJS",
     "description": "Complete the NestJS Course",
     "status": "XXXOPEN",
-    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632"
+    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
+    "labels": [
+        {
+            "name": "urgent"
+        }
+    ]
+
 }
 
 

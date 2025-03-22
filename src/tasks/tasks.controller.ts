@@ -67,6 +67,10 @@ export class TasksController {
         await this.taskService.deleteTask(task);
     }
 
+    // 1) Create an endpoint :id/labels
+    // 2) addLabels - mixing existing labels with ne ones
+    // 3) 500 - with need a method to get unique labels to store
+    
 
     private async findOneOrFail(id: string): Promise<Task>{
         const task = await this.taskService.findOne(id); 

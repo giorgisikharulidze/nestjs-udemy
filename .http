@@ -60,7 +60,11 @@ Content-Type: {{contentType}}
 
 {   "title" : "Learn NestJS",
     "description": "Complete the NestJS Course",
-    "status": "IN_PROGRESS"
+    "status": "IN_PROGRESS",
+    "labels":[{
+        "name": "done"
+    }
+    ]
 }
 
 

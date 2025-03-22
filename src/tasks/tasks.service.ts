@@ -6,13 +6,17 @@ import { WrongTaskStatusException } from './exceptions/wrong-task-status.excepti
 import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CreateTaskLabelDto } from './create-task-label.dto';
+import { TaskLabel } from './task-label.entity';
 
 @Injectable()
 export class TasksService {
    
     constructor(
         @InjectRepository(Task)
-        private readonly taskRepository: Repository<Task>
+        private readonly taskRepository: Repository<Task>,
+        @InjectRepository(TaskLabel)
+        private readonly labelsRepository: Repository<TaskLabel>
     ){}
 
     public async findAll(): Promise<Task[]> {
@@ -21,11 +25,18 @@ export class TasksService {
 
     public async findOne(id:string): Promise<Task | null>  {
 
-    return await this.taskRepository.findOneBy({id});
+    return await this.taskRepository.findOne({
+        where: {id},
+        relations: ['labels'],
+    });
     }
 
     public async createTask(createTaskDto: CreateTaskDto): Promise<Task>{
 
+/*        await this.taskRepository.create({
+            
+        });
+*/
         return await this.taskRepository.save(createTaskDto);
 
     }
@@ -49,6 +60,19 @@ export class TasksService {
         await this.taskRepository.delete(task);
 
     }
+
+    public async addLabels(task: Task, lableDtos: CreateTaskLabelDto[]): 
+    Promise<Task>{
+        const labels = lableDtos.map(
+            (label)=> 
+                this.labelsRepository.create(label),
+        )
+        task.labels = [... task.labels, ...labels];
+        return await this.taskRepository.save(task);
+
+    }
+        
+    
 
     private isValideStatusTransition(
         currentStatus: TaskStatus,

@@ -61,15 +61,10 @@ if(updateTaskDto.labels){
         return  await this.taskRepository.save(task);
     }
 
-    public async  deleteTask(task: Task): Promise<void> {
-        await this.taskRepository.delete(task);
-
-    }
-
     public async addLabels(task: Task, lableDtos: CreateTaskLabelDto[]): 
     Promise<Task>{
 
-                // 1) dublicate dtos
+        // 1) dublicate dtos
         //2) get existing names 
         // 3) new labels aren't already existing ones
         // 4) we save new ones, only if there are any real new ones
@@ -93,6 +88,11 @@ if(updateTaskDto.labels){
 
     }
         
+    public async  deleteTask(task: Task): Promise<void> {
+//        await this.taskRepository.remove(task);
+        await this.taskRepository.delete(task.id);
+    }
+
     
 
     private isValideStatusTransition(

@@ -16,6 +16,11 @@ GET {{baseUrl}}/tasks?limit=2&offset=2
 GET {{baseUrl}}/tasks?status=IN_PROGRESS
 
 
+### Get all with search query 
+# @name getAllWithSearch
+GET {{baseUrl}}/tasks?saerch=NestJs
+
+
 ### Get one tasks
 GET {{baseUrl}}/tasks/{{taskId}}
 
@@ -27,7 +32,7 @@ POST {{baseUrl}}/tasks
 Content-Type: {{contentType}} 
 
 {
-    "title" : "Learn NestJS",
+    "title" : "Learn 123",
     "description": "Complete the NestJS Course",
     "status": "OPEN",
     "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",

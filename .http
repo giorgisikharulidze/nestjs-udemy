@@ -21,6 +21,12 @@ GET {{baseUrl}}/tasks?status=IN_PROGRESS
 GET {{baseUrl}}/tasks?search=tho
 
 
+### Get all filtered by labels 
+# @name getAllFilteredByLabels
+GET {{baseUrl}}/tasks?labels=urgent
+
+
+
 ### Get one tasks
 GET {{baseUrl}}/tasks/{{taskId}}
 

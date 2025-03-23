@@ -10,7 +10,6 @@ import { CreateTaskLabelDto } from './create-task-label.dto';
 import { TaskLabel } from './task-label.entity';
 import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from 'src/common/pagination.params';
-import { filter } from 'rxjs';
 
 @Injectable()
 export class TasksService {
@@ -40,23 +39,23 @@ export class TasksService {
       );
     }
 
-    if(filters.labels?.length){
-
-      const subQuery= query.subQuery()
-      .select('labels.taskId')
-      .from('task_label','labels')
-      .where('labels.name IN (:...names)',{names: filters.labels})
-      .getQuery();
+    if (filters.labels?.length) {
+      const subQuery = query
+        .subQuery()
+        .select('labels.taskId')
+        .from('task_label', 'labels')
+        .where('labels.name IN (:...names)', { names: filters.labels })
+        .getQuery();
 
       query.andWhere(`task.id in ${subQuery}`);
-//      query.andWhere('labels.name IN (:...names)', {names: filters.labels});
+      //      query.andWhere('labels.name IN (:...names)', {names: filters.labels});
     }
 
-    query.orderBy(`task.${filters.sortBy}`,filters.sortOrder);
+    query.orderBy(`task.${filters.sortBy}`, filters.sortOrder);
     query.skip(pagination.offset).take(pagination.limit);
 
-//    console.log('SQL Query:', query.getSql());
-//    console.log('Full Query with Params:', query.getQueryAndParameters()); 
+    //    console.log('SQL Query:', query.getSql());
+    //    console.log('Full Query with Params:', query.getQueryAndParameters());
     return query.getManyAndCount();
   }
 

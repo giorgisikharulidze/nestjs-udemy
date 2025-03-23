@@ -7,7 +7,14 @@
 
 
 ### Get all tasks
+# @name getAllTasks
 GET {{baseUrl}}/tasks
+
+
+### Get all in progress tasks
+# @name getAllInProgressTasks
+GET {{baseUrl}}/tasks?status=IN_PROGRESS
+
 
 ### Get one tasks
 GET {{baseUrl}}/tasks/{{taskId}}

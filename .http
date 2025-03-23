@@ -25,6 +25,10 @@ GET {{baseUrl}}/tasks?search=tho
 # @name getAllFilteredByLabels
 GET {{baseUrl}}/tasks?labels=urgent
 
+### Get all sorted
+# @name getAllSorted
+GET {{baseUrl}}/tasks?sortBy=title&sortOrder=ASC&limit=100
+
 
 
 ### Get one tasks
@@ -38,7 +42,7 @@ POST {{baseUrl}}/tasks
 Content-Type: {{contentType}} 
 
 {
-    "title" : "Learn 123",
+    "title" : "ALearn 123",
     "description": "Complete the NestJS Course",
     "status": "OPEN",
     "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
@@ -57,7 +61,7 @@ POST {{baseUrl}}/tasks
 Content-Type: {{contentType}} 
 
 {
-    "title" : "Learn NestJS",
+    "title" : "ALearn NestJS",
     "description": "Complete the NestJS Course",
     "status": "XXXOPEN",
     "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",

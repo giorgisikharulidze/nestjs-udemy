@@ -10,6 +10,7 @@ import { CreateTaskLabelDto } from './create-task-label.dto';
 import { TaskLabel } from './task-label.entity';
 import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from 'src/common/pagination.params';
+import { filter } from 'rxjs';
 
 @Injectable()
 export class TasksService {
@@ -22,26 +23,28 @@ export class TasksService {
 
   public async findAll(
     filters: FindTaskParams,
-    pagination: PaginationParams
-
+    pagination: PaginationParams,
   ): Promise<[Task[], number]> {
+    const query = this.taskRepository
+      .createQueryBuilder('task')
+      .leftJoinAndSelect('task.labels', 'labels');
 
-    const where: FindOptionsWhere<Task>={};
-
-    if(filters.status){
-      where.status = filters.status;
-    }
-    if(filters.search?.trim()){
-      where.title = Like(`%${filters.search}%`);
-      where.description = Like(`%${filters.search}%`);
+    if (filters.status) {
+      query.andWhere('task.status = :status', { status: filters.status });
     }
 
-    return await this.taskRepository.findAndCount({
-      where,
-      relations: ['labels'],
-      skip: pagination.offset,
-      take: pagination.limit
-    });
+    if (filters.search?.trim()) {
+      query.andWhere(
+        '(task.title ILIKE :search OR task.description ILIKE :search)',
+        { search: `%${filters.search}%` },
+      );
+    }
+
+    query.skip(pagination.offset).take(pagination.limit);
+
+//    console.log('SQL Query:', query.getSql());
+//    console.log('Full Query with Params:', query.getQueryAndParameters()); 
+    return query.getManyAndCount();
   }
 
   public async findOne(id: string): Promise<Task | null> {

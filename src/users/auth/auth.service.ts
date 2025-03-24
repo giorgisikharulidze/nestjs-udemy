@@ -2,6 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from '../create-user.dto';
+import { User } from '../user.entity';
 
 @Injectable()
 export class AuthService {
@@ -9,12 +10,6 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
-
-  // 1) User registration
-  //  - make sure does not exist yet
-  //  - store the user
-  //  -(optional) generate the token
-  // 2) generating token
 
   public async register(createUserDto: CreateUserDto) {
     const existingUser = await this.userService.findOneByEmail(
@@ -33,5 +28,17 @@ export class AuthService {
 
     return user;
   }
+
+  private generateToken(user: User): string{
+    const payload = {sub: user.id, name: user.name};
+    return this.jwtService.sign(payload);
+  }
+  
+  // 1) User registration
+  //  - make sure does not exist yet
+  //  - store the user
+  //  -(optional) generate the token
+  // 2) generating token
+
 
 }

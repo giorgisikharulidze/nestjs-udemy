@@ -1,5 +1,15 @@
-import { IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
 import { PropertyType } from './property.model';
+import { PropertyDetails } from './property-details.entity';
+import { Type } from 'class-transformer';
+import { CreatePropertyDetailsDto } from './create-property-details.dto';
 
 export class CreatePropertyDto {
   @IsNotEmpty()
@@ -13,4 +23,9 @@ export class CreatePropertyDto {
   @IsNotEmpty()
   @IsUUID()
   userId: string;
+
+
+  @ValidateNested({ each: true })
+  @Type(() => CreatePropertyDetailsDto)
+  propertyDetails: CreatePropertyDetailsDto;
 }

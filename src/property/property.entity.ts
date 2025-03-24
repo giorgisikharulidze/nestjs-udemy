@@ -3,12 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { PropertyType } from './property.model';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { User } from 'src/users/user.entity';
+import { PropertyDetails } from './property-details.entity';
 
 @Entity()
 export class Property {
@@ -39,4 +41,8 @@ export class Property {
 
   @ManyToOne(() => User, (user) => user.properties)
   user: User;
+
+  @OneToOne(()=> PropertyDetails,(propertyDetails)=>propertyDetails.property)
+  propertyDetails: PropertyDetails
+
 }

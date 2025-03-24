@@ -3,7 +3,7 @@ import { TaskStatus } from './task.model';
 import { Injectable } from '@nestjs/common';
 import { UpdateTaskDto } from './update-task.dto';
 import { WrongTaskStatusException } from './exceptions/wrong-task-status.exception';
-import { FindOptionsWhere, Like, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Task } from './task.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaskLabelDto } from './create-task-label.dto';

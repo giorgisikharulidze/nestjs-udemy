@@ -16,6 +16,7 @@ import { User } from './users/user.entity';
 import { TaskLabel } from './tasks/task-label.entity';
 import { PropertyModule } from './property/property.module';
 import { Property } from './property/property.entity';
+import { PropertyDetails } from './property/property-details.entity';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { Property } from './property/property.entity';
       inject: [ConfigService],
       useFactory: (configService: TypedConfigService) => ({
         ...configService.get('database'),
-        entities: [Task, User, TaskLabel, Property],
+        entities: [Task, User, TaskLabel, Property, PropertyDetails],
       }),
     }),
     ConfigModule.forRoot({

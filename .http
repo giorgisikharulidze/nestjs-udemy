@@ -120,7 +120,7 @@ Content-Type: {{contentType}}
 
 ### Get All Properties
 # @name getProperties
-GET {{baseUrl}}/property
+GET {{baseUrl}}/property?limit=20&offset=2
 
 
 ### Get one property
@@ -134,9 +134,13 @@ POST {{baseUrl}}/property
 Content-Type: {{contentType}}
 
 {
-    "name": "House 2",
+    "name": "House 20",
     "type": "REAL_ESTATE",
-    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632"
+    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
+    "propertyDetails": {
+        "make": "subaru",
+        "model": "crostreck XV"
+    }
 }
 ### set the property id
 @propertyId = {{createProperty.response.body.id}}

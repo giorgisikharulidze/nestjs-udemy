@@ -9,20 +9,34 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
 import { CreatePropertyDto } from './create-property.dto';
 import { FindOneParams } from './find-one.params';
 import { UpdatePropertyDto } from './update-property.dto';
+import { PaginationParams } from 'src/common/pagination.params';
+import { number } from 'joi';
+import { PaginationResponse } from 'src/common/pagination.response';
 
 @Controller('property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
 
   @Get()
-  public async findAll(): Promise<Property[]> {
-    return await this.propertyService.findAll();
+  public async findAll(
+    @Query() pagination: PaginationParams,
+  ): Promise<PaginationResponse<Property>> {
+    const [items, total] = await this.propertyService.findAll(pagination);
+
+    return {
+      data: items,
+      meta: {
+        total,
+        ...pagination,
+      },
+    };
   }
 
   @Get('/:id')

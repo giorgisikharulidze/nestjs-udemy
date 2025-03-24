@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import { Property } from '../property/property.entity';
 import { Task } from '../tasks/task.entity';
 import {
@@ -12,6 +13,7 @@ import {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @Expose()
   id: string;
 
   @Column({
@@ -19,23 +21,29 @@ export class User {
     length: 60,
     nullable: false,
   })
+  @Expose()
   name: string;
 
   @Column()
+  @Expose()
   email: string;
 
   @Column()
   password: string;
 
   @CreateDateColumn()
+  @Expose()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Expose()
   updatedAt: Date;
 
   @OneToMany(() => Task, (task) => task.user)
+  @Expose()
   tasks: Task[];
 
   @OneToMany(() => Property, (property) => property.user)
+  @Expose()
   properties: Property[];
 }

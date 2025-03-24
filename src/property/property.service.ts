@@ -1,12 +1,12 @@
 import { Get, Injectable } from '@nestjs/common';
 import { QueryBuilder, Repository } from 'typeorm';
 import { Property } from './property.entity';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePropertyDto } from './create-property.dto';
 import { UpdatePropertyDto } from './update-property.dto';
 import { PropertyDetails } from './property-details.entity';
-import { PaginationParams } from 'src/common/pagination.params';
+import { PaginationParams } from '../common/pagination.params';
 
 @Injectable()
 export class PropertyService {

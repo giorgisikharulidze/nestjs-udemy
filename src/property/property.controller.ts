@@ -16,9 +16,8 @@ import { Property } from './property.entity';
 import { CreatePropertyDto } from './create-property.dto';
 import { FindOneParams } from './find-one.params';
 import { UpdatePropertyDto } from './update-property.dto';
-import { PaginationParams } from 'src/common/pagination.params';
-import { number } from 'joi';
-import { PaginationResponse } from 'src/common/pagination.response';
+import { PaginationParams } from '../common/pagination.params';
+import { PaginationResponse } from '../common/pagination.response';
 
 @Controller('property')
 export class PropertyController {

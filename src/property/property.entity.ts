@@ -8,8 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PropertyType } from './property.model';
-import { IsNotEmpty, IsString } from 'class-validator';
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 import { PropertyDetails } from './property-details.entity';
 
 @Entity()

@@ -17,6 +17,7 @@ import { TaskLabel } from './tasks/task-label.entity';
 import { PropertyModule } from './property/property.module';
 import { Property } from './property/property.entity';
 import { PropertyDetails } from './property/property-details.entity';
+import { authConfig } from './config/auth.config';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { PropertyDetails } from './property/property-details.entity';
       }),
     }),
     ConfigModule.forRoot({
-      load: [appConfig, typeOrmConfig],
+      load: [appConfig, typeOrmConfig, authConfig],
       validationSchema: appConfigSchema,
       validationOptions: {
         //allowUnknow: false,

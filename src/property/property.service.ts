@@ -68,6 +68,6 @@ export class PropertyService {
     return await this.propertyRepository.save(property);
   }
   public async deleteProperty(property: Property): Promise<void> {
-    this.propertyRepository.delete(property.id);
+   await this.propertyRepository.delete(property.id);
   }
 }

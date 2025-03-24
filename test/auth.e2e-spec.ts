@@ -53,4 +53,20 @@ afterAll(async()=>{
         
       })
   })
+
+
+  it('/auth/register (POST) = dublicate email', async()=>{
+    await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser);
+    
+        return  await request(testSetup.app.getHttpServer())
+        .post('/auth/register')
+        .send(testUser)
+        .expect(409);          
+
+      })
+
+
+  
 });

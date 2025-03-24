@@ -18,6 +18,7 @@ import { PropertyModule } from './property/property.module';
 import { Property } from './property/property.entity';
 import { PropertyDetails } from './property/property-details.entity';
 import { authConfig } from './config/auth.config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { authConfig } from './config/auth.config';
     }),
     TasksModule,
     PropertyModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

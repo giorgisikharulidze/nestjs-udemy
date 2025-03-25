@@ -33,18 +33,15 @@ describe('Authentication & Authorization (e2e)', () => {
     await testSetup.teardown();
   });
 
-  it('/ (GET)', () => {
-    return request(testSetup.app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect((res) => expect(res.text).toContain('Hello World!'));
-  });
-
   const testUser = {
     email: 'test@example.com',
     password: 'ASD12$sd',
     name: 'Test User',
   };
+
+  it('should require auth', () => {
+    return request(testSetup.app.getHttpServer()).get('/tasks').expect(401);
+  });
 
   it('should allow public route access', async () => {
     await request(testSetup.app.getHttpServer())
@@ -117,9 +114,7 @@ describe('Authentication & Authorization (e2e)', () => {
     expect(response.body.accessToken).toBeDefined();
   });
 
-  it('should require auth', () => {
-    return request(testSetup.app.getHttpServer()).get('/tasks').expect(401);
-  });
+
 
   it('/auth/profile (GET) ', async () => {
     await request(testSetup.app.getHttpServer())

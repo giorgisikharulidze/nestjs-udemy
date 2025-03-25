@@ -19,6 +19,9 @@ import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth.request';
 import { AuthGuard } from '../auth.guard';
 import { Public } from '../decorator/public.decorator';
+import { AdminResponse } from './admin.response';
+import { Role } from '../role.enum';
+import { Roles } from '../decorator/roles.decorator';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -55,5 +58,11 @@ export class AuthController {
       return user;
     }
     throw new NotFoundException();
+  }
+
+  @Get('admin') //auth/admin
+  @Roles(Role.AMDIN)
+  async adminOnly(): Promise<AdminResponse> {
+    return new AdminResponse({ message: 'This is for admins only!' });
   }
 }

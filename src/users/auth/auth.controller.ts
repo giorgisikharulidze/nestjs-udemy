@@ -18,6 +18,7 @@ import { LoginResponse } from '../login.response';
 import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth.request';
 import { AuthGuard } from '../auth.guard';
+import { Public } from '../decorator/public.decorator';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -29,12 +30,14 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @Public()
   public async register(@Body() createUserDto: CreateUserDto): Promise<User> {
     const user = await this.authService.register(createUserDto);
     return user;
   }
 
   @Post('login')
+  @Public()
   public async login(@Body() loginDto: LoginDto): Promise<LoginResponse> {
     const accessToken = await this.authService.login(
       loginDto.email,

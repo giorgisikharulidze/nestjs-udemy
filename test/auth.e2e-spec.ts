@@ -53,6 +53,21 @@ describe('AppController (e2e)', () => {
       });
   });
 
+
+  it('should allow public route access', async()=>{
+    
+    await request(testSetup.app.getHttpServer())
+    .post('/auth/register')
+    .send(testUser)
+    .expect(201);
+
+    await request(testSetup.app.getHttpServer())
+    .post('/auth/login')
+    .send(testUser)
+    .expect(201);
+
+  })
+
   it('/auth/register (POST) - dublicate email', async () => {
     await request(testSetup.app.getHttpServer())
       .post('/auth/register')
@@ -81,7 +96,7 @@ describe('AppController (e2e)', () => {
     return request(testSetup.app.getHttpServer()).get('/tasks').expect(401);
   });
 
-  it('/auth/progile (GET) ', async () => {
+  it('/auth/profile (GET) ', async () => {
     await request(testSetup.app.getHttpServer())
       .post('/auth/register')
       .send(testUser);

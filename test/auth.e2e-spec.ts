@@ -7,7 +7,7 @@ import { Role } from '../src/users/role.enum';
 import { PasswordService } from '../src/users/password/password.service';
 import { JwtService } from '@nestjs/jwt';
 
-describe('AppController (e2e)', () => {
+describe('Authentication & Authorization (e2e)', () => {
   //  let app: INestApplication<App>;
 
   /*  beforeEach(async () => {
@@ -46,40 +46,40 @@ describe('AppController (e2e)', () => {
     name: 'Test User',
   };
 
-  
-  it('should allow public route access', async()=>{
-    
+  it('should allow public route access', async () => {
     await request(testSetup.app.getHttpServer())
-    .post('/auth/register')
-    .send(testUser)
-    .expect(201);
+      .post('/auth/register')
+      .send(testUser)
+      .expect(201);
 
     await request(testSetup.app.getHttpServer())
-    .post('/auth/login')
-    .send(testUser)
-    .expect(201);
+      .post('/auth/login')
+      .send(testUser)
+      .expect(201);
+  });
 
-  })
+  it('should include roles in JWT token', async () => {
+    const userRepo = testSetup.app.get(getRepositoryToken(User));
 
-  it('should include roles in JWT token',async()=>{
-     const userRepo = testSetup.app.get(getRepositoryToken(User));
-     
-     await userRepo.save({
+    await userRepo.save({
       ...testUser,
       roles: [Role.AMDIN],
-      password: await testSetup.app.get(PasswordService).hash(testUser.password),
-     });
+      password: await testSetup.app
+        .get(PasswordService)
+        .hash(testUser.password),
+    });
 
-     
     const response = await request(testSetup.app.getHttpServer())
-    .post('/auth/login')
-    .send({ email: testUser.email, password: testUser.password });
+      .post('/auth/login')
+      .send({ email: testUser.email, password: testUser.password });
 
-    const decoded = testSetup.app.get(JwtService).verify(response.body.accessToken);
+    const decoded = testSetup.app
+      .get(JwtService)
+      .verify(response.body.accessToken);
 
     expect(decoded.roles).toBeDefined();
-     expect(decoded.roles).toContain(Role.AMDIN);
-  })
+    expect(decoded.roles).toContain(Role.AMDIN);
+  });
 
   it('/auth/register (POST)', () => {
     return request(testSetup.app.getHttpServer())
@@ -92,7 +92,6 @@ describe('AppController (e2e)', () => {
         expect(res.body).not.toHaveProperty('password');
       });
   });
-
 
   it('/auth/register (POST) - dublicate email', async () => {
     await request(testSetup.app.getHttpServer())
@@ -141,6 +140,32 @@ describe('AppController (e2e)', () => {
         expect(res.body.email).toBe(testUser.email);
         expect(res.body.name).toBe(testUser.name);
         expect(res.body).not.toHaveProperty('password');
+      });
+  });
+
+  it('/auth/admin (GET) - admin access', async () => {
+    const userRepo = testSetup.app.get(getRepositoryToken(User));
+
+    await userRepo.save({
+      ...testUser,
+      roles: [Role.AMDIN],
+      password: await testSetup.app
+        .get(PasswordService)
+        .hash(testUser.password),
+    });
+
+    const response = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: testUser.email, password: testUser.password });
+
+    const token = response.body.accessToken;
+
+    return request(testSetup.app.getHttpServer())
+      .get('/auth/admin')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.message).toBe('This is for admins only!');
       });
   });
 });

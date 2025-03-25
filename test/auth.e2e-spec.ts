@@ -190,6 +190,22 @@ describe('Authentication & Authorization (e2e)', () => {
   });
 
 
+  it('/auth/register (POST) - attemplting to register as an admin', async()=>{
+
+    const userAdmin={
+      ...testUser,
+      roles: [Role.AMDIN]
+    }
+
+    await request(testSetup.app.getHttpServer())
+    .post('/auth/register')
+    .send(userAdmin)
+    .expect(201)
+    .expect((res)=>{
+      expect(res.body.roles).toEqual([Role.USER]);
+    });
+
+  })
 
 
 });

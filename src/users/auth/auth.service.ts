@@ -17,7 +17,7 @@ export class AuthService {
     private readonly passwordService: PasswordService,
   ) {}
 
-  public async register(createUserDto: CreateUserDto):Promise<User> {
+  public async register(createUserDto: CreateUserDto): Promise<User> {
     const existingUser = await this.userService.findOneByEmail(
       createUserDto.email,
     );
@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   private generateToken(user: User): string {
-    const payload = { sub: user.id, name: user.name };
+    const payload = { sub: user.id, name: user.name, roles: user.roles };
     return this.jwtService.sign(payload);
   }
 

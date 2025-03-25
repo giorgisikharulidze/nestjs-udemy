@@ -1,6 +1,11 @@
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { TestSetup } from './util/test-setup';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { User } from '../src/users/user.entity';
+import { Role } from '../src/users/role.enum';
+import { PasswordService } from '../src/users/password/password.service';
+import { JwtService } from '@nestjs/jwt';
 
 describe('AppController (e2e)', () => {
   //  let app: INestApplication<App>;
@@ -41,19 +46,7 @@ describe('AppController (e2e)', () => {
     name: 'Test User',
   };
 
-  it('/auth/register (POST)', () => {
-    return request(testSetup.app.getHttpServer())
-      .post('/auth/register')
-      .send(testUser)
-      .expect(201)
-      .expect((res) => {
-        expect(res.body.email).toBe(testUser.email);
-        expect(res.body.name).toBe(testUser.name);
-        expect(res.body).not.toHaveProperty('password');
-      });
-  });
-
-
+  
   it('should allow public route access', async()=>{
     
     await request(testSetup.app.getHttpServer())
@@ -67,6 +60,39 @@ describe('AppController (e2e)', () => {
     .expect(201);
 
   })
+
+  it('should include roles in JWT token',async()=>{
+     const userRepo = testSetup.app.get(getRepositoryToken(User));
+     
+     await userRepo.save({
+      ...testUser,
+      roles: [Role.AMDIN],
+      password: await testSetup.app.get(PasswordService).hash(testUser.password),
+     });
+
+     
+    const response = await request(testSetup.app.getHttpServer())
+    .post('/auth/login')
+    .send({ email: testUser.email, password: testUser.password });
+
+    const decoded = testSetup.app.get(JwtService).verify(response.body.accessToken);
+
+    expect(decoded.roles).toBeDefined();
+     expect(decoded.roles).toContain(Role.AMDIN);
+  })
+
+  it('/auth/register (POST)', () => {
+    return request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser)
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.email).toBe(testUser.email);
+        expect(res.body.name).toBe(testUser.name);
+        expect(res.body).not.toHaveProperty('password');
+      });
+  });
+
 
   it('/auth/register (POST) - dublicate email', async () => {
     await request(testSetup.app.getHttpServer())

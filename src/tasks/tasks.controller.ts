@@ -12,7 +12,6 @@ import {
   Patch,
   Post,
   Query,
-  Request,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './create-task.dto';
@@ -35,8 +34,13 @@ export class TasksController {
     @Query()
     filters: FindTaskParams,
     @Query() pagination: PaginationParams,
+    @CurrentUserId() userId: string,
   ): Promise<PaginationResponse<Task>> {
-    const [items, total] = await this.taskService.findAll(filters, pagination);
+    const [items, total] = await this.taskService.findAll(
+      filters,
+      pagination,
+      userId,
+    );
 
     return {
       data: items,

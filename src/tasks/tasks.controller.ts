@@ -11,6 +11,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './create-task.dto';
@@ -22,25 +23,27 @@ import { CreateTaskLabelDto } from './create-task-label.dto';
 import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
+import { AuthRequest } from '../users/auth/auth.request';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 
   @Get()
-  public async findAll(@Query() 
-  filters: FindTaskParams,
-  @Query() pagination: PaginationParams
-): Promise<PaginationResponse<Task>> {
-    const [items, total] =  await this.taskService.findAll(filters,pagination);
+  public async findAll(
+    @Query()
+    filters: FindTaskParams,
+    @Query() pagination: PaginationParams,
+  ): Promise<PaginationResponse<Task>> {
+    const [items, total] = await this.taskService.findAll(filters, pagination);
 
     return {
       data: items,
       meta: {
         total,
-        ...pagination
-//        offset: pagination.offset,
-//        limit: pagination.limit
+        ...pagination,
+        //        offset: pagination.offset,
+        //        limit: pagination.limit
       },
     };
   }
@@ -51,8 +54,14 @@ export class TasksController {
   }
 
   @Post()
-  public async create(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
-    return await this.taskService.createTask(createTaskDto);
+  public async create(
+    @Body() createTaskDto: CreateTaskDto,
+    @Request() request: AuthRequest,
+  ): Promise<Task> {
+    return await this.taskService.createTask({
+      ...createTaskDto,
+      userId: request.user.sub,
+    });
   }
 
   /*    @Patch(':id/status')

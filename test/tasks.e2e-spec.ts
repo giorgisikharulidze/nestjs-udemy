@@ -1,13 +1,7 @@
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { TestSetup } from './util/test-setup';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { User } from '../src/users/user.entity';
-import { Role } from '../src/users/role.enum';
-import { PasswordService } from '../src/users/password/password.service';
-import { JwtService } from '@nestjs/jwt';
-import { title } from 'process';
-import { TaskStatus } from 'src/tasks/task.model';
+import { TaskStatus } from '../src/tasks/task.model';
 
 describe('Tasks (e2e)', () => {
   //  let app: INestApplication<App>;
@@ -26,7 +20,7 @@ describe('Tasks (e2e)', () => {
   let taskId: string;
 
   const testUser = {
-    email: 'test@example.com',
+    email: 'test2@example.com',
     password: 'ASD12$sd',
     name: 'Test User',
   };
@@ -60,10 +54,31 @@ describe('Tasks (e2e)', () => {
   });
 
   afterEach(async () => {
-    testSetup.cleanup();
+    await testSetup.cleanup();
   });
 
   afterAll(async () => {
     await testSetup.teardown();
+  });
+
+  it('should not allow  access to other users tasks', async () => {
+    const otherUser = { ...testUser, email: 'other@example.com' };
+
+    await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(otherUser)
+      .expect(201);
+
+    const loginResponse = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send(otherUser)
+      .expect(201);
+
+    const otherToken = loginResponse.body.accessToken;
+
+    await request(testSetup.app.getHttpServer())
+      .get(`/tasks/${taskId}`)
+      .set('Authorization', `Bearer ${otherToken}`)
+      .expect(403);
   });
 });

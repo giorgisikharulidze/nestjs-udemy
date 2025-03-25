@@ -77,7 +77,6 @@ describe('AppController (e2e)', () => {
     expect(response.body.accessToken).toBeDefined();
   });
 
-
   it('/auth/progile (GET) ', async () => {
     await request(testSetup.app.getHttpServer())
       .post('/auth/register')
@@ -91,16 +90,12 @@ describe('AppController (e2e)', () => {
 
     return request(testSetup.app.getHttpServer())
       .get('/auth/profile')
-      .set('Authorization',`Bearer ${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect((res)=>{
+      .expect((res) => {
         expect(res.body.email).toBe(testUser.email);
         expect(res.body.name).toBe(testUser.name);
         expect(res.body).not.toHaveProperty('password');
       });
-      
-
-
   });
-
 });

@@ -77,6 +77,10 @@ describe('AppController (e2e)', () => {
     expect(response.body.accessToken).toBeDefined();
   });
 
+  it('should require auth', () => {
+    return request(testSetup.app.getHttpServer()).get('/tasks').expect(401);
+  });
+
   it('/auth/progile (GET) ', async () => {
     await request(testSetup.app.getHttpServer())
       .post('/auth/register')

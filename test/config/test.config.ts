@@ -14,7 +14,7 @@ export const testConfig = {
   auth: {
     jwt: {
       secret: 'secret-123',
-      expires: '1m',
+      expiresIn: '1m',
     },
   },
 };

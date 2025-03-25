@@ -3,9 +3,9 @@ import { AppModule } from '../src/app.module';
 import { TestSetup } from './util/test-setup';
 
 describe('AppController (e2e)', () => {
-//  let app: INestApplication<App>;
+  //  let app: INestApplication<App>;
 
-/*  beforeEach(async () => {
+  /*  beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -14,19 +14,19 @@ describe('AppController (e2e)', () => {
     await app.init();
   });*/
 
-  let testSetup: TestSetup; 
+  let testSetup: TestSetup;
 
-  beforeEach(async()=>{
+  beforeEach(async () => {
     testSetup = await TestSetup.create(AppModule);
-  })
-  
-afterEach(async()=>{
-  testSetup.cleanup();
-})
+  });
 
-afterAll(async()=>{
-  await testSetup.teardown();
-})
+  afterEach(async () => {
+    testSetup.cleanup();
+  });
+
+  afterAll(async () => {
+    await testSetup.teardown();
+  });
 
   it('/ (GET)', () => {
     return request(testSetup.app.getHttpServer())
@@ -38,35 +38,42 @@ afterAll(async()=>{
   const testUser = {
     email: 'test@example.com',
     password: 'ASD12$sd',
-    name: 'Test User'
+    name: 'Test User',
   };
 
-  it('/auth/register (POST)',()=>{
+  it('/auth/register (POST)', () => {
     return request(testSetup.app.getHttpServer())
       .post('/auth/register')
       .send(testUser)
       .expect(201)
-      .expect((res)=>{
+      .expect((res) => {
         expect(res.body.email).toBe(testUser.email);
         expect(res.body.name).toBe(testUser.name);
         expect(res.body).not.toHaveProperty('password');
-        
-      })
-  })
+      });
+  });
 
-
-  it('/auth/register (POST) = dublicate email', async()=>{
+  it('/auth/register (POST) - dublicate email', async () => {
     await request(testSetup.app.getHttpServer())
       .post('/auth/register')
       .send(testUser);
-    
-        return  await request(testSetup.app.getHttpServer())
-        .post('/auth/register')
-        .send(testUser)
-        .expect(409);          
 
-      })
+    return await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser)
+      .expect(409);
+  });
 
+  it('/auth/login (POST) ', async () => {
+    await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser);
 
-  
+    const response = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send({ email: testUser.email, password: testUser.password });
+
+    expect(response.status).toBe(201);
+    expect(response.body.accessToken).toBeDefined();
+  });
 });

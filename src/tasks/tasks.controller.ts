@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -49,8 +50,14 @@ export class TasksController {
   }
 
   @Get('/:id')
-  public async findOne(@Param() params: FindOneParams): Promise<Task> {
-    return await this.findOneOrFail(params.id);
+  public async findOne(
+    @Param() params: FindOneParams,
+    @CurrentUserId() userId: string,
+  ): Promise<Task> {
+    const task = await this.findOneOrFail(params.id);
+    this.checkTaskOwnership(task, userId);
+
+    return task;
   }
 
   @Post()
@@ -80,8 +87,11 @@ export class TasksController {
   public async updateTask(
     @Param() params: FindOneParams,
     @Body() updateTaskDto: UpdateTaskDto,
+    @CurrentUserId() userId: string,
   ): Promise<Task> {
     const task = await this.findOneOrFail(params.id);
+    this.checkTaskOwnership(task, userId);
+
     try {
       return await this.taskService.updateTask(task, updateTaskDto);
     } catch (error) {
@@ -94,8 +104,13 @@ export class TasksController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async deleteTask(@Param() params: FindOneParams): Promise<void> {
+  public async deleteTask(
+    @Param() params: FindOneParams,
+    @CurrentUserId() userId: string,
+  ): Promise<void> {
     const task = await this.findOneOrFail(params.id);
+    this.checkTaskOwnership(task, userId);
+
     await this.taskService.deleteTask(task);
   }
 
@@ -107,9 +122,10 @@ export class TasksController {
   public async addlabels(
     @Param() params: FindOneParams,
     @Body() labels: CreateTaskLabelDto[],
+    @CurrentUserId() userId: string,
   ): Promise<Task> {
     const task = await this.findOneOrFail(params.id);
-
+    this.checkTaskOwnership(task, userId);
     return await this.taskService.addLabels(task, labels);
   }
 
@@ -118,8 +134,10 @@ export class TasksController {
   public async removeLabels(
     @Param() params: FindOneParams,
     @Body() labelNames: string[],
+    @CurrentUserId() userId: string,
   ): Promise<void> {
     const task = await this.findOneOrFail(params.id);
+    this.checkTaskOwnership(task, userId);
     await this.taskService.removeLebels(task, labelNames);
   }
 
@@ -130,5 +148,11 @@ export class TasksController {
       throw new NotFoundException();
     }
     return await task;
+  }
+
+  private checkTaskOwnership(task: Task, userId: string): void {
+    if (task.userId !== userId) {
+      throw new ForbiddenException('You can only acess your own tasks');
+    }
   }
 }

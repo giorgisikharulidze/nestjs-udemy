@@ -23,7 +23,7 @@ import { CreateTaskLabelDto } from './create-task-label.dto';
 import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
-import { AuthRequest } from '../users/auth/auth.request';
+import { CurrentUserId } from './../users/decorator/current-user-id.decorator';
 
 @Controller('tasks')
 export class TasksController {
@@ -56,11 +56,11 @@ export class TasksController {
   @Post()
   public async create(
     @Body() createTaskDto: CreateTaskDto,
-    @Request() request: AuthRequest,
+    @CurrentUserId() userId: string,
   ): Promise<Task> {
     return await this.taskService.createTask({
       ...createTaskDto,
-      userId: request.user.sub,
+      userId,
     });
   }
 

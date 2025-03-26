@@ -75,7 +75,6 @@ Authorization: Bearer {{accessToken}}
     "title" : "ALearn NestJS",
     "description": "Complete the NestJS Course",
     "status": "XXXOPEN",
-    "userId": "42ccff11-d170-4650-b5d4-7085a2f8a378",
     "labels": [
         {
             "name": "urgent"
@@ -153,7 +152,6 @@ Authorization: Bearer {{accessToken}}
 {
     "name": "House 24",
     "type": "REAL_ESTATE",
-    "userId": "42ccff11-d170-4650-b5d4-7085a2f8a378",
     "propertyDetails": {
         "make": "subaru",
         "model": "crostreck XV"

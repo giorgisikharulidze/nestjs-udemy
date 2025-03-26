@@ -57,7 +57,7 @@ export class TasksController {
   }
 
   @Get('/:id')
-  @ApiParam({ name: 'id', type: String, description: 'Task ID' }) 
+  @ApiParam({ name: 'id', type: String, description: 'Task ID' })
   public async findOne(
     @Param() params: FindOneParams,
     @CurrentUserId() userId: string,
@@ -77,22 +77,18 @@ export class TasksController {
         title: { type: 'string', example: 'ALearn 123' },
         description: { type: 'string', example: 'Complete the NestJS Course' },
         status: { type: 'string', example: 'OPEN' },
-        userId: { type: 'string', format: 'uuid', example: '42ccff11-d170-4650-b5d4-7085a2f8a378' },
         labels: {
           type: 'array',
           items: {
             type: 'object',
             properties: {
-              name: { type: 'string' }
-            }
+              name: { type: 'string' },
+            },
           },
-          example: [
-            { name: 'urgent' },
-            { name: 'priority' }
-          ]
-        }
-      }
-    }
+          example: [{ name: 'urgent' }, { name: 'priority' }],
+        },
+      },
+    },
   })
   public async create(
     @Body() createTaskDto: CreateTaskDto,
@@ -126,22 +122,23 @@ export class TasksController {
         title: { type: 'string', example: 'ALearn 123' },
         description: { type: 'string', example: 'Complete the NestJS Course' },
         status: { type: 'string', example: 'OPEN' },
-        userId: { type: 'string', format: 'uuid', example: '42ccff11-d170-4650-b5d4-7085a2f8a378' },
+        userId: {
+          type: 'string',
+          format: 'uuid',
+          example: '42ccff11-d170-4650-b5d4-7085a2f8a378',
+        },
         labels: {
           type: 'array',
           items: {
             type: 'object',
             properties: {
-              name: { type: 'string' }
-            }
+              name: { type: 'string' },
+            },
           },
-          example: [
-            { name: 'urgent 2' },
-            { name: 'priority 2' }
-          ]
-        }
-      }
-    }
+          example: [{ name: 'urgent 2' }, { name: 'priority 2' }],
+        },
+      },
+    },
   })
   public async updateTask(
     @Param() params: FindOneParams,
@@ -187,14 +184,11 @@ export class TasksController {
       items: {
         type: 'object',
         properties: {
-          name: { type: 'string', example: 'prioritized' }
-        }
+          name: { type: 'string', example: 'prioritized' },
+        },
       },
-      example: [
-        { name: 'prioritized' },
-        { name: 'bug' }
-      ]
-    }
+      example: [{ name: 'prioritized' }, { name: 'bug' }],
+    },
   })
   public async addlabels(
     @Param() params: FindOneParams,
@@ -213,11 +207,11 @@ export class TasksController {
     schema: {
       type: 'array',
       items: {
-        type: 'string'
+        type: 'string',
       },
-      example: ["prioritized", "bug"]
-    }
-  })  
+      example: ['prioritized', 'bug'],
+    },
+  })
   @HttpCode(HttpStatus.NO_CONTENT)
   public async removeLabels(
     @Param() params: FindOneParams,

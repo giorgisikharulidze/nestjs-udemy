@@ -66,11 +66,6 @@ export class PropertyController {
       properties: {
         name: { type: 'string', example: 'House 01' },
         type: { type: 'string', example: 'REAL_ESTATE' },
-        userId: {
-          type: 'string',
-          format: 'uuid',
-          example: '42ccff11-d170-4650-b5d4-7085a2f8a378',
-        },
         propertyDetails: {
           type: 'object',
           properties: {
@@ -86,8 +81,10 @@ export class PropertyController {
     @Body() createPropertyDto: CreatePropertyDto,
     @CurrentUserId() userId: string,
   ): Promise<Property> {
-    const property =
-      await this.propertyService.createProperty(createPropertyDto);
+    const property = await this.propertyService.createProperty(
+      createPropertyDto,
+      userId,
+    );
     this.checkPropertyOwnership(property, userId);
     return property;
   }

@@ -7,7 +7,6 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { PropertyType } from './property.model';
-import { PropertyDetails } from './property-details.entity';
 import { Type } from 'class-transformer';
 import { CreatePropertyDetailsDto } from './create-property-details.dto';
 
@@ -20,9 +19,9 @@ export class CreatePropertyDto {
   @IsEnum(PropertyType)
   type: PropertyType;
 
-  @IsNotEmpty()
-  @IsUUID()
-  userId: string;
+//  @IsNotEmpty()
+//  @IsUUID()
+//  userId: string;
 
 
   @ValidateNested({ each: true })

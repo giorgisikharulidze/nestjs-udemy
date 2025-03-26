@@ -42,9 +42,13 @@ export class PropertyService {
 
   public async createProperty(
     createPropertyDto: CreatePropertyDto,
+    userId: string,
   ): Promise<Property> {
     // 1️⃣ Property-ის შექმნა, მაგრამ ჯერ PropertyDetails არ ინახება
-    const property = this.propertyRepository.create(createPropertyDto);
+    const property = this.propertyRepository.create({
+      ...createPropertyDto,
+      userId,
+    });
     await this.propertyRepository.save(property);
 
     // 2️⃣ PropertyDetails-ის ცალკე შენახვა

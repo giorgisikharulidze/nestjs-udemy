@@ -9,43 +9,52 @@
 ### Get all tasks
 # @name getAllTasks
 GET {{baseUrl}}/tasks?limit=2&offset=2
+Authorization: Bearer {{accessToken}}
+
 
 
 ### Get all in progress tasks
 # @name getAllInProgressTasks
 GET {{baseUrl}}/tasks?status=IN_PROGRESS
+Authorization: Bearer {{accessToken}}
 
 
 ### Get all with search query 
 # @name getAllWithSearch
 GET {{baseUrl}}/tasks?search=tho
+Authorization: Bearer {{accessToken}}
 
 
 ### Get all filtered by labels 
 # @name getAllFilteredByLabels
 GET {{baseUrl}}/tasks?labels=urgent
+Authorization: Bearer {{accessToken}}
+
 
 ### Get all sorted
 # @name getAllSorted
 GET {{baseUrl}}/tasks?sortBy=title&sortOrder=ASC&limit=100
+Authorization: Bearer {{accessToken}}
 
 
 
 ### Get one tasks
 GET {{baseUrl}}/tasks/{{taskId}}
+Authorization: Bearer {{accessToken}}
 
 
 
 ###Create new task
 # @name createTask
 POST {{baseUrl}}/tasks
-Content-Type: {{contentType}} 
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
     "title" : "ALearn 123",
     "description": "Complete the NestJS Course",
     "status": "OPEN",
-    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
+    "userId": "42ccff11-d170-4650-b5d4-7085a2f8a378",
     "labels": [
         {
             "name": "urgent"
@@ -59,12 +68,13 @@ Content-Type: {{contentType}}
 
 POST {{baseUrl}}/tasks
 Content-Type: {{contentType}} 
+Authorization: Bearer {{accessToken}}
 
 {
     "title" : "ALearn NestJS",
     "description": "Complete the NestJS Course",
     "status": "XXXOPEN",
-    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
+    "userId": "42ccff11-d170-4650-b5d4-7085a2f8a378",
     "labels": [
         {
             "name": "urgent"
@@ -79,6 +89,7 @@ Content-Type: {{contentType}}
 
 PATCH {{baseUrl}}/tasks/{{taskId}}
 Content-Type: {{contentType}} 
+Authorization: Bearer {{accessToken}}
 
 {   "title" : "Learn NestJS",
     "description": "Complete the NestJS Course",
@@ -102,6 +113,7 @@ DELETE {{baseUrl}}/tasks/{{taskId}}
 # @name addLabels
 POST {{baseUrl}}/tasks/{{taskId}}/labels
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 [
     {"name": "prioritized"},
@@ -113,6 +125,7 @@ Content-Type: {{contentType}}
 # @name removeLabels
 DELETE {{baseUrl}}/tasks/{{taskId}}/labels
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 ["prioritized","bug"]
 
@@ -120,23 +133,26 @@ Content-Type: {{contentType}}
 
 ### Get All Properties
 # @name getProperties
-GET {{baseUrl}}/property?limit=20&offset=2
+GET {{baseUrl}}/property?limit=20&offset=0
+Authorization: Bearer {{accessToken}}
 
 
 ### Get one property
 # @name getOneProperty
 GET {{baseUrl}}/property/{{propertyId}}
+Authorization: Bearer {{accessToken}}
 
 
 ### Create property
 # @name createProperty
 POST {{baseUrl}}/property
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
     "name": "House 20",
     "type": "REAL_ESTATE",
-    "userId": "b300067a-0dc4-4950-b44f-d0a9a8d30632",
+    "userId": "42ccff11-d170-4650-b5d4-7085a2f8a378",
     "propertyDetails": {
         "make": "subaru",
         "model": "crostreck XV"
@@ -149,14 +165,50 @@ Content-Type: {{contentType}}
 ### Delete property
 # @name deleteProperty
 DELETE {{baseUrl}}/property/{{propertyId}}
-
+Authorization: Bearer {{accessToken}}
 
 ### Update property
 # @name updateProperty
 PATCH {{baseUrl}}/property/{{propertyId}}
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
  "name": "House 3",
  "type": "REAL_ESTATE"
 }
+
+
+### Create User
+# @name createUser
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+ {
+    "email": "gsikharulidze@example.com",
+    "password": "1qaz!QAZ",
+    "name": "Giorgi Sikharulidze"
+}
+
+
+### User Login
+# @name userLogin
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+ {
+    "email": "gsikharulidze@example.com",
+    "password": "1qaz!QAZ"
+}
+### set the accessToken
+@accessToken = {{userLogin.response.body.accessToken}}
+
+
+
+### User Profile
+# @name userProfile
+GET {{baseUrl}}/auth/profile
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+

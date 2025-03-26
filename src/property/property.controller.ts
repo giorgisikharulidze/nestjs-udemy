@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -18,6 +19,7 @@ import { FindOneParams } from './find-one.params';
 import { UpdatePropertyDto } from './update-property.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
+import { CurrentUserId } from 'src/users/decorator/current-user-id.decorator';
 
 @Controller('property')
 export class PropertyController {
@@ -26,8 +28,12 @@ export class PropertyController {
   @Get()
   public async findAll(
     @Query() pagination: PaginationParams,
+    @CurrentUserId() userId: string,
   ): Promise<PaginationResponse<Property>> {
-    const [items, total] = await this.propertyService.findAll(pagination);
+    const [items, total] = await this.propertyService.findAll(
+      pagination,
+      userId,
+    );
 
     return {
       data: items,
@@ -39,22 +45,34 @@ export class PropertyController {
   }
 
   @Get('/:id')
-  public async findOne(@Param() params: FindOneParams): Promise<Property> {
-    return await this.findOneOrFail(params.id);
+  public async findOne(
+    @Param() params: FindOneParams,
+    @CurrentUserId() userId: string,
+  ): Promise<Property> {
+    const property = await this.findOneOrFail(params.id);
+    this.checkPropertyOwnership(property, userId);
+    return property;
   }
 
   @Post()
   public async createProperty(
     @Body() createPropertyDto: CreatePropertyDto,
+    @CurrentUserId() userId: string,
   ): Promise<Property> {
-    return await this.propertyService.createProperty(createPropertyDto);
+    const property =
+      await this.propertyService.createProperty(createPropertyDto);
+    this.checkPropertyOwnership(property, userId);
+    return property;
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async deleteProperty(@Param() params: FindOneParams): Promise<void> {
+  public async deleteProperty(
+    @Param() params: FindOneParams,
+    @CurrentUserId() userId: string,
+  ): Promise<void> {
     const property = await this.findOneOrFail(params.id);
-
+    this.checkPropertyOwnership(property, userId);
     await this.propertyService.deleteProperty(property);
   }
 
@@ -62,8 +80,10 @@ export class PropertyController {
   public async updateProperty(
     @Param() params: FindOneParams,
     @Body() updateProperty: UpdatePropertyDto,
+    @CurrentUserId() userId: string,
   ) {
     const property = await this.findOneOrFail(params.id);
+    this.checkPropertyOwnership(property, userId);
 
     return await this.propertyService.updateProperty(property, updateProperty);
   }
@@ -75,5 +95,11 @@ export class PropertyController {
       throw new NotFoundException();
     }
     return property;
+  }
+
+  private checkPropertyOwnership(property: Property, userId: string): void {
+    if (property.userId !== userId) {
+      throw new ForbiddenException('You can only acess your own properties');
+    }
   }
 }

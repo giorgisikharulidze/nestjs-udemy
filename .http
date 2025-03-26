@@ -150,7 +150,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "House 20",
+    "name": "House 24",
     "type": "REAL_ESTATE",
     "userId": "42ccff11-d170-4650-b5d4-7085a2f8a378",
     "propertyDetails": {

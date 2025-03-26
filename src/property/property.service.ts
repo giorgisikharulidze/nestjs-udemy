@@ -21,11 +21,13 @@ export class PropertyService {
 
   public async findAll(
     pagination: PaginationParams,
+    userId: string,
   ): Promise<[Property[], number]> {
     const query = this.propertyRepository
       .createQueryBuilder('property')
       .leftJoinAndSelect('property.propertyDetails', 'propertyDetails');
 
+    query.andWhere('property.userId = :userId', { userId });
     query.skip(pagination.offset).take(pagination.limit);
 
     return await query.getManyAndCount(); //this.propertyRepository.find();
@@ -68,6 +70,7 @@ export class PropertyService {
     return await this.propertyRepository.save(property);
   }
   public async deleteProperty(property: Property): Promise<void> {
-   await this.propertyRepository.delete(property.id);
+    await this.propertyDetailsRepository.delete({ propertyId: property.id });
+    await this.propertyRepository.delete(property.id);
   }
 }

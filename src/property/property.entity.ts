@@ -41,7 +41,9 @@ export class Property {
   @ManyToOne(() => User, (user) => user.properties)
   user: User;
 
-  @OneToOne(()=> PropertyDetails,(propertyDetails)=>propertyDetails.property)
+  @OneToOne(()=> PropertyDetails,(propertyDetails)=>propertyDetails.property,{
+    onDelete: 'CASCADE'
+  })
   propertyDetails: PropertyDetails
 
 }

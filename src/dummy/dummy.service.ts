@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { WinstonLoggerService } from 'src/logger/winston-logger.service';
-import { RedisService } from 'src/redis/redis.service';
+import { WinstonLoggerService } from '../logger/winston-logger.service';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class DummyService {

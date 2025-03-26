@@ -20,7 +20,7 @@ import { UpdatePropertyDto } from './update-property.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('Property')
@@ -49,6 +49,7 @@ export class PropertyController {
   }
 
   @Get('/:id')
+  @ApiParam({ name: 'id', type: String, description: 'Property ID' }) // აქ პარამეტრი განვსაზღვრეთ
   public async findOne(
     @Param() params: FindOneParams,
     @CurrentUserId() userId: string,
@@ -59,6 +60,25 @@ export class PropertyController {
   }
 
   @Post()
+  @ApiBody({
+    description: 'Create property with property details',
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', example: 'House 01' },
+        type: { type: 'string', example: 'REAL_ESTATE' },
+        userId: { type: 'string', format: 'uuid', example: '42ccff11-d170-4650-b5d4-7085a2f8a378' },
+        propertyDetails: {
+          type: 'object',
+          properties: {
+            make: { type: 'string', example: 'subaru' },
+            model: { type: 'string', example: 'crosstrek XV' },
+            address: { type: 'string', example: '' },            
+          },
+        },
+      },
+    },
+  })
   public async createProperty(
     @Body() createPropertyDto: CreatePropertyDto,
     @CurrentUserId() userId: string,
@@ -70,6 +90,7 @@ export class PropertyController {
   }
 
   @Delete(':id')
+  @ApiParam({ name: 'id', type: String, description: 'Property ID' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public async deleteProperty(
     @Param() params: FindOneParams,

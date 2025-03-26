@@ -22,7 +22,9 @@ import { Public } from '../decorator/public.decorator';
 import { AdminResponse } from './admin.response';
 import { Role } from '../role.enum';
 import { Roles } from '../decorator/roles.decorator';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 @SerializeOptions({ strategy: 'excludeAll' })
@@ -38,8 +40,19 @@ export class AuthController {
     const user = await this.authService.register(createUserDto);
     return user;
   }
-
+ 
   @Post('login')
+  @ApiOperation({ summary: 'Login and get JWT token' })
+  @ApiBody({
+    description: 'User login data',
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'gsikharulidze@example.com' },  // Default value
+        password: { type: 'string', example: '1qaz!QAZ' } // Default value
+      },
+    },
+  })
   @Public()
   public async login(@Body() loginDto: LoginDto): Promise<LoginResponse> {
     const accessToken = await this.authService.login(

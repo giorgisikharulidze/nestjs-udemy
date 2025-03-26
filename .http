@@ -197,7 +197,7 @@ Authorization: Bearer {{accessToken}}
 POST {{baseUrl}}/auth/login
 Content-Type: {{contentType}}
 
- {
+{
     "email": "gsikharulidze@example.com",
     "password": "1qaz!QAZ"
 }

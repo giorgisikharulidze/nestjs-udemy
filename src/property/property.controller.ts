@@ -19,11 +19,15 @@ import { FindOneParams } from './find-one.params';
 import { UpdatePropertyDto } from './update-property.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
-import { CurrentUserId } from 'src/users/decorator/current-user-id.decorator';
+import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('Property')
 @Controller('property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
+
 
   @Get()
   public async findAll(

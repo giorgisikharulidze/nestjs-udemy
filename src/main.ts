@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,9 +13,25 @@ async function bootstrap() {
   );
  // await app.listen(process.env.PORT ?? 3000);
 
+ // Swagger კონფიგურაცია
+ const config = new DocumentBuilder()
+ .setTitle('Your API Title')
+ .setDescription('Your API Description')
+ .setVersion('1.0')
+ .addBearerAuth({
+  type: 'http',
+  scheme: 'bearer',
+  name: 'Authorization'
+})
+ .addTag('example') // დაამატეთ თქვენი წარწერები თუ საჭიროა
+ .build();
+
+const document = SwaggerModule.createDocument(app, config);
+SwaggerModule.setup('api', app, document); // 'api' არის URL, სადაც Swagger UI ხელმისაწვდომი იქნება
+
   try {
     await app.listen(process.env.PORT ?? 3000);
-    console.log(`Application successfully started on port ${process.env.PORT ?? 3000}`);
+    console.log(`🚀🚀🚀 Application successfully started on port ${process.env.PORT ?? 3000} 🚀🚀🚀`);
   } catch (error) {
     console.error(`Failed to start application on port ${process.env.PORT ?? 3000}. Error:`, error.message);
   }

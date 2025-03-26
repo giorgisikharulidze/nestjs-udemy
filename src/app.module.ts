@@ -22,6 +22,7 @@ import { UsersModule } from './users/users.module';
 import { WinstonLoggerService } from './logger/winston-logger.service';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { ScheduleModule } from '@nestjs/schedule';
     PropertyModule,
     UsersModule,
     SchedulerModule,
-    ScheduleModule
+    ScheduleModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [

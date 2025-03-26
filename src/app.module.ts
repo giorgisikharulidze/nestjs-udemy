@@ -20,6 +20,8 @@ import { PropertyDetails } from './property/property-details.entity';
 import { authConfig } from './config/auth.config';
 import { UsersModule } from './users/users.module';
 import { WinstonLoggerService } from './logger/winston-logger.service';
+import { SchedulerModule } from './scheduler/scheduler.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { WinstonLoggerService } from './logger/winston-logger.service';
     TasksModule,
     PropertyModule,
     UsersModule,
+    SchedulerModule,
+    ScheduleModule
   ],
   controllers: [AppController],
   providers: [

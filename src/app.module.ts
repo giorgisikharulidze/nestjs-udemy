@@ -19,6 +19,7 @@ import { Property } from './property/property.entity';
 import { PropertyDetails } from './property/property-details.entity';
 import { authConfig } from './config/auth.config';
 import { UsersModule } from './users/users.module';
+import { WinstonLoggerService } from './logger/winston-logger.service';
 
 @Module({
   imports: [
@@ -49,10 +50,12 @@ import { UsersModule } from './users/users.module';
     DummyService,
     MessageformatterService,
     LoggerService,
+    WinstonLoggerService,
     {
       provide: TypedConfigService,
       useExisting: ConfigService,
     },
   ],
+  exports: [WinstonLoggerService]
 })
 export class AppModule {}

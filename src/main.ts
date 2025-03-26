@@ -27,7 +27,13 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // 'api' არის URL, სადაც Swagger UI ხელმისაწვდომი იქნება
+  SwaggerModule.setup('api', app, document,
+    {
+      swaggerOptions: {
+        tagsSorter: 'alpha',  // 📌 API call-ები ალფავიტური რიგით დალაგდება
+        operationsSorter: 'alpha'  // 📌 მეთოდები (GET, POST...) ალფავიტურად დალაგდება
+      },}
+  ); // 'api' არის URL, სადაც Swagger UI ხელმისაწვდომი იქნება
 
   try {
     await app.listen(process.env.PORT ?? 3000);

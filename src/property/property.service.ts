@@ -67,8 +67,21 @@ export class PropertyService {
   ): Promise<Property> {
     Object.assign(property, updatePropertyDto);
 
+    if (updatePropertyDto.propertyDetails) {
+      const existingDetails = await this.propertyDetailsRepository.findOne({
+        where: { propertyId: property.id },
+      });
+
+      if (existingDetails) {
+        // Update existing record
+        Object.assign(existingDetails, updatePropertyDto.propertyDetails);
+        await this.propertyDetailsRepository.save(existingDetails);
+      }
+    }
+
     return await this.propertyRepository.save(property);
   }
+
   public async deleteProperty(property: Property): Promise<void> {
     await this.propertyDetailsRepository.delete({ propertyId: property.id });
     await this.propertyRepository.delete(property.id);

@@ -22,8 +22,9 @@ import { Public } from '../decorator/public.decorator';
 import { AdminResponse } from './admin.response';
 import { Role } from '../role.enum';
 import { Roles } from '../decorator/roles.decorator';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @ApiTags('Auth')
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -35,6 +36,17 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @ApiBody({
+    description: 'Register a new user',
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', example: 'User@example.com' },
+        password: { type: 'string', example: '1qaz!QAZ' },
+        name: { type: 'string', example: 'User' }
+      }
+    }
+  })  
   @Public()
   public async register(@Body() createUserDto: CreateUserDto): Promise<User> {
     const user = await this.authService.register(createUserDto);

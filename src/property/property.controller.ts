@@ -28,7 +28,6 @@ import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
 
-
   @Get()
   public async findAll(
     @Query() pagination: PaginationParams,
@@ -67,13 +66,17 @@ export class PropertyController {
       properties: {
         name: { type: 'string', example: 'House 01' },
         type: { type: 'string', example: 'REAL_ESTATE' },
-        userId: { type: 'string', format: 'uuid', example: '42ccff11-d170-4650-b5d4-7085a2f8a378' },
+        userId: {
+          type: 'string',
+          format: 'uuid',
+          example: '42ccff11-d170-4650-b5d4-7085a2f8a378',
+        },
         propertyDetails: {
           type: 'object',
           properties: {
             make: { type: 'string', example: 'subaru' },
             model: { type: 'string', example: 'crosstrek XV' },
-            address: { type: 'string', example: '' },            
+            address: { type: 'string', example: '' },
           },
         },
       },
@@ -102,6 +105,25 @@ export class PropertyController {
   }
 
   @Patch(':id')
+  @ApiParam({ name: 'id', type: String, description: 'Property ID' })
+  @ApiBody({
+    description: 'Create property with property details',
+    schema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string', example: 'House 01' },
+        type: { type: 'string', example: 'REAL_ESTATE' },
+        propertyDetails: {
+          type: 'object',
+          properties: {
+            make: { type: 'string', example: 'BWM' },
+            model: { type: 'string', example: 'X5' },
+            address: { type: 'string', example: '' },
+          },
+        },
+      },
+    },
+  })
   public async updateProperty(
     @Param() params: FindOneParams,
     @Body() updateProperty: UpdatePropertyDto,

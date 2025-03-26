@@ -24,7 +24,7 @@ import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
 import { CurrentUserId } from './../users/decorator/current-user-id.decorator';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('Tasks')
@@ -57,6 +57,7 @@ export class TasksController {
   }
 
   @Get('/:id')
+  @ApiParam({ name: 'id', type: String, description: 'Task ID' }) 
   public async findOne(
     @Param() params: FindOneParams,
     @CurrentUserId() userId: string,
@@ -68,6 +69,31 @@ export class TasksController {
   }
 
   @Post()
+  @ApiBody({
+    description: 'Create a new task',
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', example: 'ALearn 123' },
+        description: { type: 'string', example: 'Complete the NestJS Course' },
+        status: { type: 'string', example: 'OPEN' },
+        userId: { type: 'string', format: 'uuid', example: '42ccff11-d170-4650-b5d4-7085a2f8a378' },
+        labels: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' }
+            }
+          },
+          example: [
+            { name: 'urgent' },
+            { name: 'priority' }
+          ]
+        }
+      }
+    }
+  })
   public async create(
     @Body() createTaskDto: CreateTaskDto,
     @CurrentUserId() userId: string,
@@ -91,6 +117,32 @@ export class TasksController {
     }*/
 
   @Patch(':id')
+  @ApiParam({ name: 'id', type: String, description: 'Task ID' })
+  @ApiBody({
+    description: 'Update a task and labels',
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', example: 'ALearn 123' },
+        description: { type: 'string', example: 'Complete the NestJS Course' },
+        status: { type: 'string', example: 'OPEN' },
+        userId: { type: 'string', format: 'uuid', example: '42ccff11-d170-4650-b5d4-7085a2f8a378' },
+        labels: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' }
+            }
+          },
+          example: [
+            { name: 'urgent 2' },
+            { name: 'priority 2' }
+          ]
+        }
+      }
+    }
+  })
   public async updateTask(
     @Param() params: FindOneParams,
     @Body() updateTaskDto: UpdateTaskDto,
@@ -110,6 +162,7 @@ export class TasksController {
   }
 
   @Delete('/:id')
+  @ApiParam({ name: 'id', type: String, description: 'Task ID' })
   @HttpCode(HttpStatus.NO_CONTENT)
   public async deleteTask(
     @Param() params: FindOneParams,
@@ -126,6 +179,23 @@ export class TasksController {
   // 3) 500 - with need a method to get unique labels to store
 
   @Post(':id/labels')
+  @ApiParam({ name: 'id', type: String, description: 'Task ID' })
+  @ApiBody({
+    description: 'Add specific labels to a task',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string', example: 'prioritized' }
+        }
+      },
+      example: [
+        { name: 'prioritized' },
+        { name: 'bug' }
+      ]
+    }
+  })
   public async addlabels(
     @Param() params: FindOneParams,
     @Body() labels: CreateTaskLabelDto[],
@@ -137,6 +207,17 @@ export class TasksController {
   }
 
   @Delete('/:id/labels')
+  @ApiParam({ name: 'id', type: String, description: 'Task ID' })
+  @ApiBody({
+    description: 'Remove specific labels from a task',
+    schema: {
+      type: 'array',
+      items: {
+        type: 'string'
+      },
+      example: ["prioritized", "bug"]
+    }
+  })  
   @HttpCode(HttpStatus.NO_CONTENT)
   public async removeLabels(
     @Param() params: FindOneParams,

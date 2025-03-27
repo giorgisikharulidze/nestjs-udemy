@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -6,6 +7,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   NotFoundException,
   Param,
   Patch,
@@ -20,15 +22,48 @@ import { UpdatePropertyDto } from './update-property.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
+import { WinstonLoggerService } from '../logger/winston-logger.service';
 
 @ApiBearerAuth()
 @ApiTags('Property')
 @Controller('property')
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService) {}
+  constructor(
+    private readonly propertyService: PropertyService,
+    private readonly logger: WinstonLoggerService,
+  ) {}
 
-  @Get()
+  @Get('/details') // Change the path for this method
+  @ApiOperation({ summary: 'Get Property Details with Procedure' })
+  public async getPropertyDetailsWithProcedure(
+    @CurrentUserId() userId: string,
+  ): Promise<any> {
+    let result =
+      await this.propertyService.getPropertyDetailsWithProcedure(userId);
+    result = result.map((item) => ({
+      data: {
+        id: item.id,
+        name: item.name,
+        type: item.type,
+        details: {
+          make: item.make,
+          model: item.model,
+          address: item.address,
+        },
+      },
+    }));
+    return result;
+  }
+
+  @Get('/all') // Different path for this method
+  @ApiOperation({ summary: 'Get All Properties' })
   public async findAll(
     @Query() pagination: PaginationParams,
     @CurrentUserId() userId: string,

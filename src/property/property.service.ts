@@ -1,5 +1,5 @@
 import { Get, Injectable } from '@nestjs/common';
-import { QueryBuilder, Repository } from 'typeorm';
+import { DataSource, QueryBuilder, Repository } from 'typeorm';
 import { Property } from './property.entity';
 import { User } from '../users/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { CreatePropertyDto } from './create-property.dto';
 import { UpdatePropertyDto } from './update-property.dto';
 import { PropertyDetails } from './property-details.entity';
 import { PaginationParams } from '../common/pagination.params';
+import { WinstonLoggerService } from '../logger/winston-logger.service';
 
 @Injectable()
 export class PropertyService {
@@ -17,8 +18,10 @@ export class PropertyService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(PropertyDetails)
     private readonly propertyDetailsRepository: Repository<PropertyDetails>,
+    private dataSource: DataSource,
+    private readonly logger: WinstonLoggerService,
+    
   ) {}
-
   public async findAll(
     pagination: PaginationParams,
     userId: string,
@@ -89,5 +92,9 @@ export class PropertyService {
   public async deleteProperty(property: Property): Promise<void> {
     await this.propertyDetailsRepository.delete({ propertyId: property.id });
     await this.propertyRepository.delete(property.id);
+  }
+
+  public async getPropertyDetailsWithProcedure(userId: string): Promise<any[]> {
+      return await this.dataSource.query(`SELECT * FROM get_user_properties($1)`, [userId]);
   }
 }

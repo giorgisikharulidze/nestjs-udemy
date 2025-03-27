@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { PropertyType } from './property.model';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 import { PropertyDetails } from './property-details.entity';
 
 @Entity()

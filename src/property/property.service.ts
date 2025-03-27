@@ -1,7 +1,7 @@
 import { Get, Injectable } from '@nestjs/common';
 import { DataSource, QueryBuilder, Repository } from 'typeorm';
 import { Property } from './property.entity';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePropertyDto } from './dtos/create-property.dto';
 import { UpdatePropertyDto } from './dtos/update-property.dto';

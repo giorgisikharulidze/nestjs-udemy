@@ -12,7 +12,7 @@ import { typeOrmConfig } from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypedConfigService } from './config/typed-config.service';
 import { Task } from './tasks/task.entity';
-import { User } from './users/user.entity';
+import { User } from './users/entities/user.entity';
 import { TaskLabel } from './tasks/task-label.entity';
 import { PropertyModule } from './property/property.module';
 import { Property } from './property/property.entity';

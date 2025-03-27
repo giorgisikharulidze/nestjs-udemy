@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
-import { Property } from '../property/property.entity';
-import { Task } from '../tasks/task.entity';
+import { Property } from '../../property/property.entity';
+import { Task } from '../../tasks/task.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from './role.enum';
-import { Attendee } from '../event/attandee.entity';
-import { Event } from '../event/event.entity';
+import { Role } from './../enums/role.enum';
+import { Attendee } from '../../event/attandee.entity';
+import { Event } from '../../event/event.entity';
 
 @Entity()
 export class User {

@@ -7,7 +7,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  InternalServerErrorException,
   NotFoundException,
   Param,
   Patch,
@@ -17,7 +16,7 @@ import {
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
 import { CreatePropertyDto } from './create-property.dto';
-import { FindOneParams } from './find-one.params';
+import { FindOneParams } from '../common/find-one.params';
 import { UpdatePropertyDto } from './update-property.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
@@ -65,20 +64,20 @@ export class PropertyController {
 
   @Get('/all') // Different path for this method
   @ApiOperation({ summary: 'Get All Properties' })
-    @ApiQuery({
-      name: 'limit',
-      required: false,  // ეს პარამეტრი არ არის აუცილებელი
-      description: 'Number of properties to return',
-      type: Number,
-      example: 100,
-    })
-    @ApiQuery({
-      name: 'offset',
-      required: false,  // ეს პარამეტრი არ არის აუცილებელი
-      description: 'Offset for pagination',
-      type: Number,
-      example: 0,
-    })
+  @ApiQuery({
+    name: 'limit',
+    required: false, // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Number of properties to return',
+    type: Number,
+    example: 100,
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false, // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Offset for pagination',
+    type: Number,
+    example: 0,
+  })
   public async findAll(
     @Query() pagination: PaginationParams,
     @CurrentUserId() userId: string,

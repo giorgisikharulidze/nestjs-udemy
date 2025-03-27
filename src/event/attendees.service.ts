@@ -33,7 +33,6 @@ export class AttendeesService {
     const attendee =
       (await this.findOneByEventIdAndUserId(eventId, userId)) ?? new Attendee();
 
-    attendee.name = '';
     attendee.eventId = eventId;
     attendee.userId = userId;
     attendee.answer = input.answer;

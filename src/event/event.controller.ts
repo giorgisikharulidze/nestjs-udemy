@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, ForbiddenException, Get, HttpCode, HttpStatus, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -36,8 +49,9 @@ export class EventController {
     example: 0,
   })
   public async findAll(@Query() pagination: PaginationParams) {
-
-    return await this.eventService.getEventWithAttendeeCountPagination(pagination);
+    return await this.eventService.getEventWithAttendeeCountPagination(
+      pagination,
+    );
   }
 
   @Post()
@@ -66,21 +80,19 @@ export class EventController {
     return await this.eventService.getEventWithAttendeeCount(eventId.id);
   }
 
-
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiParam({ name: 'id', type: String, description: 'Event ID' })
-  public async deleteEvent(@Param() eventId: FindOneParams):Promise<void>{
-
+  public async deleteEvent(@Param() eventId: FindOneParams): Promise<void> {
     const event = await this.eventService.findOne(eventId.id);
-    if(!event){
-        throw new NotFoundException();
+    if (!event) {
+      throw new NotFoundException();
     }
     await this.eventService.deleteEvent(event);
   }
 
   @Patch(':id')
-  @ApiParam({ name: 'id', type: String, description: 'Event ID' }) 
+  @ApiParam({ name: 'id', type: String, description: 'Event ID' })
   @ApiBody({
     description: 'Update Event',
     schema: {
@@ -93,19 +105,24 @@ export class EventController {
       },
     },
   })
-  public async updateEvent(@Param() params: FindOneParams,
-  @Body() updateEventDto: UpdateEventDto,
-  @CurrentUserId() userId: string): Promise<Event>{
+  public async updateEvent(
+    @Param() params: FindOneParams,
+    @Body() updateEventDto: UpdateEventDto,
+    @CurrentUserId() userId: string,
+  ): Promise<Event> {
     const event = await this.eventService.findOne(params.id);
 
-    if(!event){
+    if (!event) {
       throw new NotFoundException();
     }
 
-    if(event.organizerId !==userId){
-      throw new ForbiddenException(null, 'You are not authrized to change this event')
+    if (event.organizerId !== userId) {
+      throw new ForbiddenException(
+        null,
+        'You are not authrized to change this event',
+      );
     }
 
-    return this.eventService.updateEvent(event,updateEventDto)
+    return this.eventService.updateEvent(event, updateEventDto);
   }
 }

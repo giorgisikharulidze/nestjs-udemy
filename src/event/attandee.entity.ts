@@ -15,10 +15,6 @@ export class Attendee {
   @Expose()
   id: string;
 
-  @Column()
-  @Expose()
-  name: string;
-
   @ManyToOne(() => Event, (event) => event.attendees, {
     nullable: true
   })

@@ -52,21 +52,22 @@ export class EventService {
       );
   }
 
-  public async getEventWithAttendeeCount(eventId: string): Promise<Event | null> {
+  public async getEventWithAttendeeCount(
+    eventId: string,
+  ): Promise<Event | null> {
     const query = this.getEventsWithAttendeeCountQuery().andWhere(
-      'e.id = :id',{ eventId },);
+      'e.id = :id',
+      { eventId },
+    );
     return await query.getOne();
   }
 
-
-  public async getEventWithAttendeeCountPagination(pagination: PaginationParams,): Promise<PaginationResponse<Event>> {
-
+  public async getEventWithAttendeeCountPagination(
+    pagination: PaginationParams,
+  ): Promise<PaginationResponse<Event>> {
     return await paginate(this.getEventsWithAttendeeCountQuery(), pagination);
-
   }
 
-
-  
   public async findAll(
     pagination: PaginationParams,
   ): Promise<[Event[], number]> {

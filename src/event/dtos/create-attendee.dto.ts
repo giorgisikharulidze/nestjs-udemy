@@ -4,8 +4,4 @@ import { AttendeeAnswerEnum } from '../attandee.entity';
 export class CreateAttandeeDto {
   @IsEnum(AttendeeAnswerEnum)
   answer: AttendeeAnswerEnum;
-
-  @IsOptional()
-  name: string;
-  
 }

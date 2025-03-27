@@ -19,6 +19,5 @@ import { CurrentUserEventAttendanceController } from './current-user-event-atten
     CurrentUserEventAttendanceController,
   ],
   providers: [EventService, AttendeesService],
-  //  exports: [EventService]
 })
 export class EventModule {}

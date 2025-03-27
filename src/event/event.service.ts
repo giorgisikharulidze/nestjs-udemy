@@ -92,6 +92,7 @@ export class EventService {
     createEvent: CreateEventDto,
     userId: string,
   ): Promise<Event> {
+    
     return await this.eventRepository.save({
       ...createEvent,
       organizerId: userId,

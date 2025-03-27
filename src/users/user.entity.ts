@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from './role.enum';
-import { Attendee } from '../event/atandee.entity';
+import { Attendee } from '../event/attandee.entity';
 import { Event } from '../event/event.entity';
 
 @Entity()

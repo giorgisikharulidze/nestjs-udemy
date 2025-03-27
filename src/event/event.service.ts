@@ -79,4 +79,24 @@ export class EventService {
       userId,
     });
   }
+
+
+
+
+
+  public async getEventsAttendedByUserIdPaginated(
+    userId: string,
+    pagination: PaginationParams,
+  ): Promise<PaginationResponse<Event>> {
+    return paginate(this.getEventsOrganizedByUserIdQuery(userId), pagination);
+  }
+
+  private getEventsAttendedByUserIdQuery(userId: string) {
+    return this.getEventsBaseQuery()
+    .leftJoinAndSelect('e.atendees','a')
+    .where('a.userId = :userId',{userId})
+    ;
+  }
+
+
 }

@@ -25,7 +25,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { RedisModule } from './redis/redis.module';
 import { EventModule } from './event/event.module';
 import { Event } from './event/event.entity';
-import { Attendee } from './event/atandee.entity';
+import { Attendee } from './event/attandee.entity';
 import { EventService } from './event/event.service';
 
 @Module({

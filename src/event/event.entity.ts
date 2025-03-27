@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Attendee } from './atandee.entity';
+import { Attendee } from './attandee.entity';
 
 @Entity()
 export class Event {

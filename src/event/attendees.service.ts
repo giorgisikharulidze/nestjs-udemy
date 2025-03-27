@@ -1,21 +1,42 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Attendee } from './atandee.entity';
+import { Attendee } from './attandee.entity';
 import { Repository } from 'typeorm';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { Injectable } from '@nestjs/common';
 
-@ApiBearerAuth()
+@Injectable()
 export class AttendeesService {
   constructor(
     @InjectRepository(Attendee)
     private readonly attendeeRepository: Repository<Attendee>,
   ) {}
 
-
   public async findByEventId(eventId: string): Promise<Attendee[]> {
-    
-    return    await this.attendeeRepository.find({
-        where: {event: {id: eventId}}
+    return await this.attendeeRepository.find({
+      where: { event: { id: eventId } },
     });
+  }
 
+  public async findOneByEventIdAndUserId(
+    eventId: string,
+    userId: string,
+  ): Promise<Attendee | null> {
+    return await this.attendeeRepository.findOne({
+      where: { event: { id: eventId }, user: { id: userId } },
+    });
+  }
+
+
+  public async createOrUpdate(
+    updateAttendeedto: any,
+    eventId: string,
+    userId: string
+  ): Promise<Attendee>{
+    const attendee = await this.findOneByEventIdAndUserId(eventId,userId) ?? new Attendee();
+
+     attendee.eventId = eventId;
+     attendee.userId  = userId;
+     //rest of input...
+
+    return await this.attendeeRepository.save(attendee);
   }
 }

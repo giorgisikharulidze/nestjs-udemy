@@ -25,17 +25,17 @@ export class AttendeesService {
     });
   }
 
-
   public async createOrUpdate(
-    updateAttendeedto: any,
+    input: any,
     eventId: string,
-    userId: string
-  ): Promise<Attendee>{
-    const attendee = await this.findOneByEventIdAndUserId(eventId,userId) ?? new Attendee();
+    userId: string,
+  ): Promise<Attendee> {
+    const attendee =
+      (await this.findOneByEventIdAndUserId(eventId, userId)) ?? new Attendee();
 
-     attendee.eventId = eventId;
-     attendee.userId  = userId;
-     //rest of input...
+    attendee.eventId = eventId;
+    attendee.userId = userId;
+    attendee.answer = input.answer;
 
     return await this.attendeeRepository.save(attendee);
   }

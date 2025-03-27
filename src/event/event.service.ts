@@ -80,10 +80,6 @@ export class EventService {
     });
   }
 
-
-
-
-
   public async getEventsAttendedByUserIdPaginated(
     userId: string,
     pagination: PaginationParams,
@@ -93,10 +89,7 @@ export class EventService {
 
   private getEventsAttendedByUserIdQuery(userId: string) {
     return this.getEventsBaseQuery()
-    .leftJoinAndSelect('e.atendees','a')
-    .where('a.userId = :userId',{userId})
-    ;
+      .leftJoinAndSelect('e.atendees', 'a')
+      .where('a.userId = :userId', { userId });
   }
-
-
 }

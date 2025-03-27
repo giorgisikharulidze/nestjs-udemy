@@ -22,9 +22,10 @@ export class EventService {
 
     query.skip(pagination.offset).take(pagination.limit);
 
-    //    console.log('SQL Query:', query.getSql());
-    //   console.log('Full Query with Params:', query.getQueryAndParameters());
-    //    console.log(await query.getManyAndCount());
+//    console.log('SQL Query:', query.getSql());
+ //   console.log('Full Query with Params:', query.getQueryAndParameters());
+
+//    console.log(await query.getManyAndCount());
     return await query.getManyAndCount();
   }
 

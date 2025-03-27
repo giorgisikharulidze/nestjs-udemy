@@ -10,6 +10,6 @@ import { Attendee } from './atandee.entity';
   imports: [TypeOrmModule.forFeature([User, Event, Attendee])],    
   controllers: [EventController],
   providers: [EventService],
-  exports: [EventService]
+//  exports: [EventService]
 })
 export class EventModule {}

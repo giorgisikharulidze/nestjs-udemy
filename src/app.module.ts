@@ -10,7 +10,7 @@ import { appConfig } from './config/app.config';
 import { appConfigSchema } from './config/config.types';
 import { typeOrmConfig } from './config/database.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypedConfigService } from './config/typed-config.service';
+import { TypedConfigService } from './config/services/typed-config.service';
 import { Task } from './tasks/entities/task.entity';
 import { User } from './users/entities/user.entity';
 import { TaskLabel } from './tasks/entities/task-label.entity';

@@ -10,10 +10,10 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { CreateUserDto } from '../create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 import { AuthService } from './auth.service';
 import { User } from '../user.entity';
-import { LoginDto } from '../login.dto';
+import { LoginDto } from '../dtos/login.dto';
 import { LoginResponse } from '../login.response';
 import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth.request';

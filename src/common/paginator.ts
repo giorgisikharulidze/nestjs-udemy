@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { PaginationResponse } from 'src/common/pagination.response';
-import { PaginationParams } from 'src/common/pagination.params';
+import { PaginationResponse } from '../common/pagination.response';
+import { PaginationParams } from '../common/pagination.params';
 import { ObjectLiteral } from 'typeorm';
 
 /**

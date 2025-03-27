@@ -6,7 +6,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { TaskStatus } from './task.model';
+import { TaskStatus } from '../task.model';
 import { CreateTaskLabelDto } from './create-task-label.dto';
 import { Type } from 'class-transformer';
 

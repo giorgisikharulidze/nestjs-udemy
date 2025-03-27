@@ -15,9 +15,9 @@ import {
 } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { Property } from './property.entity';
-import { CreatePropertyDto } from './create-property.dto';
+import { CreatePropertyDto } from './dtos/create-property.dto';
 import { FindOneParams } from '../common/find-one.params';
-import { UpdatePropertyDto } from './update-property.dto';
+import { UpdatePropertyDto } from './dtos/update-property.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';

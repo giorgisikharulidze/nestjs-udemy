@@ -14,12 +14,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './create-task.dto';
+import { CreateTaskDto } from './dtos/create-task.dto';
 import { FindOneParams } from '../common/find-one.params';
-import { UpdateTaskDto } from './update-task.dto';
+import { UpdateTaskDto } from './dtos/update-task.dto';
 import { WrongTaskStatusException } from './exceptions/wrong-task-status.exception';
 import { Task } from './task.entity';
-import { CreateTaskLabelDto } from './create-task-label.dto';
+import { CreateTaskLabelDto } from './dtos/create-task-label.dto';
 import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';

@@ -9,7 +9,7 @@ import {
 import { EventService } from './event.service';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
 import { PaginationParams } from '../common/pagination.params';
-import { CreateEventDto } from './create-event.dto';
+import { CreateEventDto } from './dtos/create-event.dto';
 import { Event } from './event.entity';
 import { FindOneParams } from '../common/find-one.params';
 

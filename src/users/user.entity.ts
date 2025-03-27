@@ -10,6 +10,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from './role.enum';
+import { Attendee } from '../event/atandee.entity';
+import { Event } from '../event/event.entity';
 
 @Entity()
 export class User {
@@ -51,4 +53,11 @@ export class User {
   @Column('text', { array: true, default: [Role.USER] })
   @Expose()
   roles: Role[];
+
+  @OneToMany(() => Event, (event) => event.organizer)
+  @Expose()
+  organized: Event[];
+
+  @OneToMany(() => Attendee, (attendee) => attendee.user)
+  attended: Attendee[];
 }

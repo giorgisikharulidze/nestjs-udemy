@@ -33,7 +33,7 @@ Authorization: Bearer {{accessToken}}
 
 ### Get all sorted
 # @name getAllSorted
-GET {{baseUrl}}/tasks?sortBy=title&sortOrder=ASC&limit=100
+GET {{baseUrl}}/tasks?sortBy=title&sortOrder=ASC&limit=100&offset=0&search=le
 Authorization: Bearer {{accessToken}}
 
 

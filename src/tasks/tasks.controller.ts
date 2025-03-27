@@ -24,7 +24,7 @@ import { FindTaskParams } from './find-task.params';
 import { PaginationParams } from '../common/pagination.params';
 import { PaginationResponse } from '../common/pagination.response';
 import { CurrentUserId } from './../users/decorator/current-user-id.decorator';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @ApiTags('Tasks')
@@ -33,6 +33,41 @@ export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 
   @Get()
+  @ApiQuery({
+    name: 'sortBy',
+    required: false,  // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Sort tasks by a specific field',
+    type: String,
+    example: 'createdAt',
+  })
+  @ApiQuery({
+    name: 'sortOrder',
+    required: false,  // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Order of sorting, either ASC or DESC',
+    type: String,
+    example: 'ASC',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,  // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Number of tasks to return',
+    type: Number,
+    example: 100,
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false,  // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Offset for pagination',
+    type: Number,
+    example: 0,
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,  // ეს პარამეტრი არ არის აუცილებელი
+    description: 'Search term for filtering tasks',
+    type: String,
+    example: '',
+  })
   public async findAll(
     @Query()
     filters: FindTaskParams,

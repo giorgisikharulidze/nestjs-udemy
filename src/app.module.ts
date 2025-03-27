@@ -23,6 +23,10 @@ import { WinstonLoggerService } from './logger/winston-logger.service';
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { RedisModule } from './redis/redis.module';
+import { EventModule } from './event/event.module';
+import { Event } from './event/event.entity';
+import { Attendee } from './event/atandee.entity';
+import { EventService } from './event/event.service';
 
 @Module({
   imports: [
@@ -31,7 +35,7 @@ import { RedisModule } from './redis/redis.module';
       inject: [ConfigService],
       useFactory: (configService: TypedConfigService) => ({
         ...configService.get('database'),
-        entities: [Task, User, TaskLabel, Property, PropertyDetails],
+        entities: [Task, User, TaskLabel, Property, PropertyDetails, Event, Attendee],
       }),
     }),
     ConfigModule.forRoot({
@@ -49,6 +53,7 @@ import { RedisModule } from './redis/redis.module';
     SchedulerModule,
     ScheduleModule,
     RedisModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [

@@ -27,6 +27,7 @@ import {
   ApiBody,
   ApiOperation,
   ApiParam,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { WinstonLoggerService } from '../logger/winston-logger.service';
@@ -64,6 +65,20 @@ export class PropertyController {
 
   @Get('/all') // Different path for this method
   @ApiOperation({ summary: 'Get All Properties' })
+    @ApiQuery({
+      name: 'limit',
+      required: false,  // ეს პარამეტრი არ არის აუცილებელი
+      description: 'Number of properties to return',
+      type: Number,
+      example: 100,
+    })
+    @ApiQuery({
+      name: 'offset',
+      required: false,  // ეს პარამეტრი არ არის აუცილებელი
+      description: 'Offset for pagination',
+      type: Number,
+      example: 0,
+    })
   public async findAll(
     @Query() pagination: PaginationParams,
     @CurrentUserId() userId: string,

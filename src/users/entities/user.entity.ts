@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { Property } from '../../property/property.entity';
-import { Task } from '../../tasks/task.entity';
+import { Task } from '../../tasks/entities/task.entity';
 import {
   Column,
   CreateDateColumn,

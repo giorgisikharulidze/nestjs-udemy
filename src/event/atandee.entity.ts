@@ -11,9 +11,9 @@ export enum AttendeeAnswerEnum {
 
 @Entity()
 export class Attendee {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   @Expose()
-  id: number;
+  id: string;
 
   @Column()
   @Expose()
@@ -26,7 +26,7 @@ export class Attendee {
   event: Event;
 
   @Column()
-  eventId: number;
+  eventId: string;
 
   @Column('enum', {
     enum: AttendeeAnswerEnum,
@@ -39,5 +39,5 @@ export class Attendee {
   user: User;
 
   @Column()
-  userId: number;
+  userId: string;
 }

@@ -5,6 +5,8 @@ import { CreateEventDto } from './create-event.dto';
 import { PaginationParams } from '../common/pagination.params';
 import { Event } from './event.entity';
 import { UpdateEventDto } from './update-event.dto';
+import { PaginationResponse } from '../common/pagination.response';
+import { paginate } from '../common/paginator';
 
 @Injectable()
 export class EventService {
@@ -13,27 +15,31 @@ export class EventService {
     private readonly eventRepository: Repository<Event>,
   ) {}
 
+  private getEventsBaseQuery() {
+    return this.eventRepository.createQueryBuilder('e').orderBy('e.id', 'DESC');
+  }
+
   public async findAll(
     pagination: PaginationParams,
   ): Promise<[Event[], number]> {
-    const query = this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndSelect('event.attendees', 'atandee');
+    const query = this.getEventsBaseQuery().leftJoinAndSelect(
+      'e.attendees',
+      'atandee',
+    );
 
     query.skip(pagination.offset).take(pagination.limit);
 
-//    console.log('SQL Query:', query.getSql());
- //   console.log('Full Query with Params:', query.getQueryAndParameters());
+    //    console.log('SQL Query:', query.getSql());
+    //   console.log('Full Query with Params:', query.getQueryAndParameters());
 
-//    console.log(await query.getManyAndCount());
+    //    console.log(await query.getManyAndCount());
     return await query.getManyAndCount();
   }
 
   public async findOne(eventId: string): Promise<Event | null> {
-    const query = this.eventRepository
-      .createQueryBuilder('event')
-      .leftJoinAndSelect('event.attendees', 'atandee')
-      .andWhere('event.id = :eventId', { eventId });
+    const query = this.getEventsBaseQuery()
+      .leftJoinAndSelect('e.attendees', 'atandee')
+      .andWhere('e.id = :eventId', { eventId });
 
     return query.getOne();
   }
@@ -59,5 +65,18 @@ export class EventService {
 
   public async deleteEvent(event: Event): Promise<void> {
     await this.eventRepository.delete(event.id);
+  }
+
+  public async getEventsOrganizedByUserIdPaginated(
+    userId: string,
+    pagination: PaginationParams,
+  ): Promise<PaginationResponse<Event>> {
+    return paginate(this.getEventsOrganizedByUserIdQuery(userId), pagination);
+  }
+
+  private getEventsOrganizedByUserIdQuery(userId: string) {
+    return this.getEventsBaseQuery().where('e.organizerId = :userId', {
+      userId,
+    });
   }
 }

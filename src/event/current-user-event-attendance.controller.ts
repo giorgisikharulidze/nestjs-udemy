@@ -9,12 +9,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { EventService } from './event.service';
-import { AttendeesService } from './attendees.service';
-import { FindOneParams } from '../common/find-one.params';
+import { EventService } from './services/event.service';
+import { AttendeesService } from './services/attendees.service';
 import { CreateAttandeeDto } from './dtos/create-attendee.dto';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
-import { AttendeeAnswerEnum } from './attandee.entity';
+import { AttendeeAnswerEnum } from './entities/attandee.entity';
 import { PaginationParams } from '../common/pagination.params';
 
 @ApiBearerAuth()

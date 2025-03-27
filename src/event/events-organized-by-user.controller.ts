@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { EventService } from './event.service';
+import { EventService } from './services/event.service';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
 import { PaginationParams } from '../common/pagination.params';
 import { ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';

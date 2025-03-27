@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { AttendeesService } from './attendees.service';
-import { Attendee } from './attandee.entity';
+import { AttendeesService } from './services/attendees.service';
+import { Attendee } from './entities/attandee.entity';
 import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 
 @ApiBearerAuth()

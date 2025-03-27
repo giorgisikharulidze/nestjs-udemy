@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Attendee } from './attandee.entity';
+import { Attendee } from '../entities/attandee.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 

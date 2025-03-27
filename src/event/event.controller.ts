@@ -19,11 +19,11 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
-import { EventService } from './event.service';
+import { EventService } from './services/event.service';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
 import { PaginationParams } from '../common/pagination.params';
 import { CreateEventDto } from './dtos/create-event.dto';
-import { Event } from './event.entity';
+import { Event } from './entities/event.entity';
 import { FindOneParams } from '../common/find-one.params';
 import { UpdateEventDto } from './dtos/update-event.dto';
 

@@ -1,5 +1,5 @@
 import { IsEnum, IsIn, IsOptional, IsString, MinLength } from 'class-validator';
-import { TaskStatus } from './task.model';
+import { TaskStatus } from './enums/task-status.enum';
 import { Transform } from 'class-transformer';
 import { filter } from 'rxjs';
 

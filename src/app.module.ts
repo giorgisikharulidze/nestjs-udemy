@@ -15,8 +15,8 @@ import { Task } from './tasks/entities/task.entity';
 import { User } from './users/entities/user.entity';
 import { TaskLabel } from './tasks/entities/task-label.entity';
 import { PropertyModule } from './property/property.module';
-import { Property } from './property/property.entity';
-import { PropertyDetails } from './property/property-details.entity';
+import { Property } from './property/entities/property.entity';
+import { PropertyDetails } from './property/entities/property-details.entity';
 import { authConfig } from './config/auth.config';
 import { UsersModule } from './users/users.module';
 import { WinstonLoggerService } from './logger/winston-logger.service';
@@ -26,7 +26,6 @@ import { RedisModule } from './redis/redis.module';
 import { EventModule } from './event/event.module';
 import { Event } from './event/event.entity';
 import { Attendee } from './event/attandee.entity';
-import { EventService } from './event/event.service';
 
 @Module({
   imports: [

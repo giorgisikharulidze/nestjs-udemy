@@ -1,5 +1,5 @@
 import { CreateTaskDto } from './../dtos/create-task.dto';
-import { TaskStatus } from './../task.model';
+import { TaskStatus } from '../enums/task-status.enum';
 import { Injectable } from '@nestjs/common';
 import { UpdateTaskDto } from './../dtos/update-task.dto';
 import { WrongTaskStatusException } from './../exceptions/wrong-task-status.exception';

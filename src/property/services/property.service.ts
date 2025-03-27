@@ -1,13 +1,13 @@
 import { Get, Injectable } from '@nestjs/common';
 import { DataSource, QueryBuilder, Repository } from 'typeorm';
-import { Property } from './property.entity';
-import { User } from '../users/entities/user.entity';
+import { Property } from './../entities/property.entity';
+import { User } from '../../users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreatePropertyDto } from './dtos/create-property.dto';
-import { UpdatePropertyDto } from './dtos/update-property.dto';
-import { PropertyDetails } from './property-details.entity';
-import { PaginationParams } from '../common/pagination.params';
-import { WinstonLoggerService } from '../logger/winston-logger.service';
+import { CreatePropertyDto } from '../dtos/create-property.dto';
+import { UpdatePropertyDto } from '../dtos/update-property.dto';
+import { PropertyDetails } from './../entities/property-details.entity';
+import { PaginationParams } from '../../common/pagination.params';
+import { WinstonLoggerService } from '../../logger/winston-logger.service';
 
 @Injectable()
 export class PropertyService {

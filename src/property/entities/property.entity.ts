@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { PropertyType } from './property.model';
-import { User } from '../users/entities/user.entity';
 import { PropertyDetails } from './property-details.entity';
+import { PropertyType } from '../enums/property-type.enum';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Property {

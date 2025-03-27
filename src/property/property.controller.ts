@@ -13,8 +13,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { PropertyService } from './property.service';
-import { Property } from './property.entity';
+import { PropertyService } from './services/property.service';
+import { Property } from './entities/property.entity';
 import { CreatePropertyDto } from './dtos/create-property.dto';
 import { FindOneParams } from '../common/find-one.params';
 import { UpdatePropertyDto } from './dtos/update-property.dto';

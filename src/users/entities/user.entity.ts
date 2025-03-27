@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { Property } from '../../property/property.entity';
+import { Property } from  '../../property/entities/property.entity';
 import { Task } from '../../tasks/entities/task.entity';
 import {
   Column,

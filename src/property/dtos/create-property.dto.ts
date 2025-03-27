@@ -6,7 +6,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { PropertyType } from '../property.model';
+import { PropertyType } from '../enums/property-type.enum';
 import { Type } from 'class-transformer';
 import { CreatePropertyDetailsDto } from './create-property-details.dto';
 

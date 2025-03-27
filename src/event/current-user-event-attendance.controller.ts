@@ -4,6 +4,7 @@ import {
   Get,
   NotFoundException,
   Param,
+  ParseUUIDPipe,
   Put,
   Query,
 } from '@nestjs/common';
@@ -14,7 +15,7 @@ import { FindOneParams } from '../common/find-one.params';
 import { CreateAttandeeDto } from './dtos/create-attendee.dto';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
 import { AttendeeAnswerEnum } from './attandee.entity';
-import { PaginationParams } from 'src/common/pagination.params';
+import { PaginationParams } from '../common/pagination.params';
 
 @ApiBearerAuth()
 @Controller('events-attendance')
@@ -50,13 +51,13 @@ export class CurrentUserEventAttendanceController {
   }
 
   @Get('/:eventId')
-  @ApiParam({ name: 'id', type: String, description: 'Event ID' })
+  @ApiParam({ name: 'eventId', type: String, description: 'Event ID' })
   async findOne(
-    @Param() eventId: FindOneParams,
+    @Param('eventId', new ParseUUIDPipe()) eventId: string,
     @CurrentUserId() userId: string,
   ) {
     const attendee = await this.attendeesService.findOneByEventIdAndUserId(
-      eventId.id,
+      eventId,
       userId,
     );
 
@@ -67,7 +68,7 @@ export class CurrentUserEventAttendanceController {
   }
 
   @Put('/:eventId')
-  @ApiParam({ name: 'id', type: String, description: 'Event ID' })
+  @ApiParam({ name: 'eventId', type: String, description: 'Event ID' })
   @ApiBody({
     description: 'Create or update attendee',
     schema: {
@@ -82,13 +83,13 @@ export class CurrentUserEventAttendanceController {
     },
   })
   async createOrUpdate(
-    @Param() eventId: FindOneParams,
+    @Param('eventId', new ParseUUIDPipe()) eventId: string,
     @Body() createAttendeeDto: CreateAttandeeDto,
     @CurrentUserId() userId: string,
   ) {
     return this.attendeesService.createOrUpdate(
       createAttendeeDto,
-      eventId.id,
+      eventId,
       userId,
     );
   }

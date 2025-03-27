@@ -7,6 +7,7 @@ import { Event } from './event.entity';
 import { UpdateEventDto } from './dtos/update-event.dto';
 import { PaginationResponse } from '../common/pagination.response';
 import { paginate } from '../common/paginator';
+import { AttendeeAnswerEnum } from './attandee.entity';
 
 @Injectable()
 export class EventService {
@@ -19,6 +20,53 @@ export class EventService {
     return this.eventRepository.createQueryBuilder('e').orderBy('e.id', 'DESC');
   }
 
+  public getEventsWithAttendeeCountQuery() {
+    return this.getEventsBaseQuery()
+      .loadRelationCountAndMap('e.attendeeCount', 'e.attendees')
+      .loadRelationCountAndMap(
+        'e.attendeeAccepted',
+        'e.attendees',
+        'attendee',
+        (qb) =>
+          qb.where('attendee.answer = :answer', {
+            answer: AttendeeAnswerEnum.Accepted,
+          }),
+      )
+      .loadRelationCountAndMap(
+        'e.attendeeMaybe',
+        'e.attendees',
+        'attendee',
+        (qb) =>
+          qb.where('attendee.answer = :answer', {
+            answer: AttendeeAnswerEnum.Maybe,
+          }),
+      )
+      .loadRelationCountAndMap(
+        'e.attendeeRejected',
+        'e.attendees',
+        'attendee',
+        (qb) =>
+          qb.where('attendee.answer = :answer', {
+            answer: AttendeeAnswerEnum.Rejected,
+          }),
+      );
+  }
+
+  public async getEventWithAttendeeCount(eventId: string): Promise<Event | null> {
+    const query = this.getEventsWithAttendeeCountQuery().andWhere(
+      'e.id = :id',{ eventId },);
+    return await query.getOne();
+  }
+
+
+  public async getEventWithAttendeeCountPagination(pagination: PaginationParams,): Promise<PaginationResponse<Event>> {
+
+    return await paginate(this.getEventsWithAttendeeCountQuery(), pagination);
+
+  }
+
+
+  
   public async findAll(
     pagination: PaginationParams,
   ): Promise<[Event[], number]> {
@@ -28,11 +76,6 @@ export class EventService {
     );
 
     query.skip(pagination.offset).take(pagination.limit);
-
-    //    console.log('SQL Query:', query.getSql());
-    //   console.log('Full Query with Params:', query.getQueryAndParameters());
-
-    //    console.log(await query.getManyAndCount());
     return await query.getManyAndCount();
   }
 

@@ -7,7 +7,8 @@ import { Event } from '../entities/event.entity';
 import { UpdateEventDto } from '../dtos/update-event.dto';
 import { PaginationResponse } from '../../common/pagination.response';
 import { paginate } from '../../common/paginator';
-import { AttendeeAnswerEnum } from '../entities/attandee.entity';
+import { AttendeeAnswerEnum } from '../enums/atandee-answer.enum';
+
 
 @Injectable()
 export class EventService {

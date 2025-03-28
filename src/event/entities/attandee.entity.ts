@@ -2,12 +2,8 @@ import { Expose } from "class-transformer";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from './event.entity';
 import { User } from "../../users/entities/user.entity";
+import { AttendeeAnswerEnum } from "../enums/atandee-answer.enum";
 
-export enum AttendeeAnswerEnum {
-  Accepted = 1,
-  Maybe,
-  Rejected
-}
 
 @Entity()
 export class Attendee {

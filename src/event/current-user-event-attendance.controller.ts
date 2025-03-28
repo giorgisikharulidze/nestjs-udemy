@@ -13,8 +13,8 @@ import { EventService } from './services/event.service';
 import { AttendeesService } from './services/attendees.service';
 import { CreateAttandeeDto } from './dtos/create-attendee.dto';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
-import { AttendeeAnswerEnum } from './entities/attandee.entity';
 import { PaginationParams } from '../common/pagination.params';
+import { AttendeeAnswerEnum } from './enums/atandee-answer.enum';
 
 @ApiBearerAuth()
 @Controller('events-attendance')
@@ -74,7 +74,7 @@ export class CurrentUserEventAttendanceController {
       type: 'object',
       properties: {
         answer: {
-          type: 'string',
+          type: 'int',
           enum: Object.values(AttendeeAnswerEnum),
           example: AttendeeAnswerEnum.Accepted,
         },

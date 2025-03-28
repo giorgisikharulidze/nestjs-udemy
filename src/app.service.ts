@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { DummyService } from './dummy/dummy.service';
-import { LoggerService } from './logger/logger.service';
 import { AppConfig } from './config/app.config';
 import { TypedConfigService } from './config/services/typed-config.service';
 import { WinstonLoggerService } from './logger/winston-logger.service';

@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DummyService } from './dummy/dummy.service';
-import { MessageformatterService } from './messageformatter/services/messageformatter.service';
-import { LoggerService } from './logger/logger.service';
 import { TasksModule } from './tasks/tasks.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { appConfig } from './config/app.config';
@@ -58,8 +56,6 @@ import { Attendee } from './event/entities/attandee.entity';
   providers: [
     AppService,
     DummyService,
-    MessageformatterService,
-    LoggerService,
     WinstonLoggerService,
     {
       provide: TypedConfigService,

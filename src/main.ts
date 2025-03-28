@@ -15,15 +15,14 @@ async function bootstrap() {
 
   // Swagger კონფიგურაცია
   const config = new DocumentBuilder()
-    .setTitle('Your API Title')
-    .setDescription('Your API Description')
+    .setTitle('NestJs')
+//    .setDescription('Your API Description')
     .setVersion('1.0')
     .addBearerAuth({
       type: 'http',
       scheme: 'bearer',
       name: 'Authorization',
     })
-    .addTag('example') // დაამატეთ თქვენი წარწერები თუ საჭიროა
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

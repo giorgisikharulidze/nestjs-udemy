@@ -7,7 +7,6 @@ import {
   Post,
   Request,
   SerializeOptions,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -17,7 +16,6 @@ import { LoginDto } from '../dtos/login.dto';
 import { LoginResponse } from '../login.response';
 import { UserService } from '../user/user.service';
 import { AuthRequest } from './auth.request';
-import { AuthGuard } from '../auth.guard';
 import { Public } from '../decorator/public.decorator';
 import { AdminResponse } from './admin.response';
 import { Role } from '../enums/role.enum';

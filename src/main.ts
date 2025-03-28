@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -34,6 +35,18 @@ async function bootstrap() {
       },}
   ); // 'api' არის URL, სადაც Swagger UI ხელმისაწვდომი იქნება
 
+  // Kafka კონფიგურაცია განახლებული პორტით (9093)
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        brokers: ['localhost:9093'], // ახალი პორტი
+      },
+      consumer: {
+        groupId: 'nestjs-consumer',
+      },
+    },
+  });
   try {
     await app.listen(process.env.PORT ?? 3000);
     console.log(

@@ -8,7 +8,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { EventService } from './services/event.service';
 import { AttendeesService } from './services/attendees.service';
 import { CreateAttandeeDto } from './dtos/create-attendee.dto';
@@ -17,6 +17,7 @@ import { PaginationParams } from '../common/pagination.params';
 import { AttendeeAnswerEnum } from './enums/atandee-answer.enum';
 
 @ApiBearerAuth()
+@ApiTags('Events')
 @Controller('events-attendance')
 export class CurrentUserEventAttendanceController {
   constructor(

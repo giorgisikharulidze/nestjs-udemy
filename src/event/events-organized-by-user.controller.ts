@@ -2,9 +2,10 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { EventService } from './services/event.service';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
 import { PaginationParams } from '../common/pagination.params';
-import { ApiBearerAuth, ApiParam, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
+@ApiTags('Events')
 @Controller('events-organized-by-user')
 export class EventsOrganizedByUserController {
   constructor(private readonly eventService: EventService) {}

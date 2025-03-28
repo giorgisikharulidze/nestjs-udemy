@@ -18,6 +18,7 @@ import {
   ApiOperation,
   ApiParam,
   ApiQuery,
+  ApiTags,
 } from '@nestjs/swagger';
 import { EventService } from './services/event.service';
 import { CurrentUserId } from '../users/decorator/current-user-id.decorator';
@@ -28,6 +29,7 @@ import { FindOneParams } from '../common/find-one.params';
 import { UpdateEventDto } from './dtos/update-event.dto';
 
 @ApiBearerAuth()
+@ApiTags('Events')
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
